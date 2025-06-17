@@ -1,7 +1,7 @@
 <?php
 
-use Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlock;
-use Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlockDrivers\MysqlCustomBlockDriver;
+use Apsonex\EmailBuilderPhp\Support\Blocks\DbBlock;
+use Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers\MysqlDriver;
 
 use function Pest\Laravel\expectException;
 
@@ -39,11 +39,11 @@ beforeEach(function () {
 
     $this->pdo = $pdo;
 
-    CustomBlock::enableMultitenancy('tenant_id');
-    CustomBlock::ownerKeyName('owner_id');
+    DbBlock::enableMultitenancy('tenant_id');
+    DbBlock::ownerKeyName('owner_id');
 
-    $this->blocks = CustomBlock::make()
-        ->driver(MysqlCustomBlockDriver::class)
+    $this->blocks = DbBlock::make()
+        ->driver(MysqlDriver::class)
         ->preperation([
             'pdo' => $this->pdo
         ]);
@@ -54,7 +54,7 @@ afterEach(function () {
     $this->mysqlPdo->exec("DROP DATABASE `$this->dbName`");
 });
 
-describe('mysql_custom_block_driver', function () {
+describe('db_block_mysql_driver_test', function () {
 
     it('can_store_a_block_with_tenant_and_owner', function () {
         $block = $this->blocks->store([

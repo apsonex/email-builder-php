@@ -3,8 +3,8 @@
 namespace Apsonex\EmailBuilderPhp\Support\Blocks;
 
 use Apsonex\EmailBuilderPhp\Concerns\Makebale;
-use Apsonex\EmailBuilderPhp\Contracts\CustomBlockContract;
-use Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlockDrivers\FileCustomBlockDriver;
+use Apsonex\EmailBuilderPhp\Contracts\DbBlockDriverContract;
+use Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers\{FileDriver};
 
 /**
  * @method array index(array $filters = [])
@@ -13,15 +13,15 @@ use Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlockDrivers\FileCustomBlockDri
  * @method bool update(string $id, array $data)
  * @method bool destroy(string $id)
  */
-class CustomBlock
+class DbBlock
 {
     use Makebale;
 
-    public static $defaultDriver = FileCustomBlockDriver::class;
+    public static $defaultDriver = FileDriver::class;
 
     protected ?string $driver = null;
 
-    protected ?CustomBlockContract $driverInstance = null;
+    protected ?DbBlockDriverContract $driverInstance = null;
 
     public static bool $multitenancyEnabled = false;
 

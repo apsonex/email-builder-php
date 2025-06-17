@@ -1,11 +1,10 @@
 <?php
 
-namespace Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlockDrivers;
+namespace Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers;
 
 use Illuminate\Support\Str;
-use Apsonex\EmailBuilderPhp\Contracts\CustomBlockContract;
 
-class FileCustomBlockDriver extends BaseDriver implements CustomBlockContract
+class FileDriver extends BaseDriver
 {
     protected string $storagePath;
 

@@ -2,7 +2,7 @@
 
 namespace Apsonex\EmailBuilderPhp\Contracts;
 
-interface EmailConfigWithAiDriverConract
+interface HttpQueryDriverContract
 {
     public static function make(): static;
 

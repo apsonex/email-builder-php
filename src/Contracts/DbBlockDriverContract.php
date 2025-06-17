@@ -2,7 +2,7 @@
 
 namespace Apsonex\EmailBuilderPhp\Contracts;
 
-interface CustomBlockContract
+interface DbBlockDriverContract
 {
     public function tableName(string $tableName): static;
 

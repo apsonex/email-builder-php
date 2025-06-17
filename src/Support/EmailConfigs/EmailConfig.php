@@ -4,19 +4,20 @@ namespace Apsonex\EmailBuilderPhp\Support\EmailConfigs;
 
 use Apsonex\EmailBuilderPhp\Concerns\Makebale;
 use Apsonex\EmailBuilderPhp\Contracts\EmailConfigWithAiDriverConract;
-use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers\EmailConfigEmailBuilderDevDriver;
+use Apsonex\EmailBuilderPhp\Contracts\HttpQueryDriverContract;
+use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers\EmailBuilderDevDriver;
 
-class AiEmailConfig
+class EmailConfig
 {
     use Makebale;
 
-    protected ?string $defaultDriver = EmailConfigEmailBuilderDevDriver::class;
+    protected ?string $defaultDriver = EmailBuilderDevDriver::class;
 
     protected ?string $driver = null;
 
-    protected ?EmailConfigWithAiDriverConract $driverInstance = null;
+    protected ?HttpQueryDriverContract $driverInstance = null;
 
-    public function driver(?string $driver = null): EmailConfigWithAiDriverConract
+    public function driver(?string $driver = null): HttpQueryDriverContract
     {
         if ($this->driverInstance) return $this->driverInstance;
 

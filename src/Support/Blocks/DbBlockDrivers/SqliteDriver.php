@@ -1,11 +1,10 @@
 <?php
 
-namespace Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlockDrivers;
+namespace Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers;
 
 use Illuminate\Support\Str;
-use Apsonex\EmailBuilderPhp\Contracts\CustomBlockContract;
 
-class SqliteCustomBlockDriver extends BaseDriver implements CustomBlockContract
+class SqliteDriver extends BaseDriver
 {
     protected \PDO $pdo;
 

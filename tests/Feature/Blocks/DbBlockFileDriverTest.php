@@ -1,7 +1,7 @@
 <?php
 
-use Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlockDrivers\FileCustomBlockDriver;
 use Illuminate\Support\Str;
+use Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers\FileDriver;
 
 beforeEach(function () {
     // Prepare a temporary directory for file storage during tests
@@ -10,7 +10,7 @@ beforeEach(function () {
         mkdir($this->tempDir, 0755, true);
     }
 
-    $this->driver = (new FileCustomBlockDriver())->prepare([
+    $this->driver = (new FileDriver())->prepare([
         'storagePath' => $this->tempDir,
         'multitenancyEnabled' => true,
         'tenantKeyName' => 'tenant_id',
@@ -34,7 +34,7 @@ afterEach(function () {
     }
 });
 
-describe('file_custom_block_driver', function () {
+describe('db_block_file_driver_test', function () {
 
     it('file_cbd_can_store_a_block_with_tenant_and_owner', function () {
         $block = $this->driver->store([

@@ -1,12 +1,12 @@
 <?php
 
-use Apsonex\EmailBuilderPhp\Support\EmailConfigs\AiEmailConfig;
+use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfig;
 
 describe('ai_email_config_test', function () {
 
     it('it_download_fake_response_from_email_builder_dev', function () {
 
-        $resposne = AiEmailConfig::make()
+        $resposne = EmailConfig::make()
             ->driver()
             ->fake()
             ->query(

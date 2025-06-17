@@ -1,14 +1,12 @@
 <?php
 
-namespace Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlockDrivers;
+namespace Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers;
 
 use \PDO;
-use \PDOException;
 use \RuntimeException;
 use Illuminate\Support\Str;
-use Apsonex\EmailBuilderPhp\Contracts\CustomBlockContract;
 
-class MysqlCustomBlockDriver extends BaseDriver implements CustomBlockContract
+class MysqlDriver extends BaseDriver
 {
     protected ?PDO $pdo = null;
 

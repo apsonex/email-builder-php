@@ -1,7 +1,7 @@
 <?php
 
-use Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlock;
-use Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlockDrivers\SqliteCustomBlockDriver;
+use Apsonex\EmailBuilderPhp\Support\Blocks\DbBlock;
+use Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers\SqliteDriver;
 
 beforeEach(function () {
     // Create in-memory SQLite
@@ -9,17 +9,17 @@ beforeEach(function () {
     $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Set up multitenancy and driver
-    CustomBlock::enableMultitenancy('tenant_id');
-    CustomBlock::ownerKeyName('owner_id');
+    DbBlock::enableMultitenancy('tenant_id');
+    DbBlock::ownerKeyName('owner_id');
 
-    $this->blocks = CustomBlock::make()
-        ->driver(SqliteCustomBlockDriver::class)
+    $this->blocks = DbBlock::make()
+        ->driver(SqliteDriver::class)
         ->preperation([
             'pdo' => $this->pdo,
         ]);
 });
 
-describe('sqlite_custom_block_test', function () {
+describe('db_block_sqlite_driver_test', function () {
 
     it('sqlite_cbd_can_store_a_block_with_tenant_and_owner', function () {
         $block = $this->blocks->store([

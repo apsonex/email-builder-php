@@ -2,11 +2,11 @@
 
 namespace Apsonex\EmailBuilderPhp\Support\Blocks\AiBlockDrivers;
 
+use Apsonex\EmailBuilderPhp\Concerns\Fakeable;
 use Apsonex\EmailBuilderPhp\Concerns\Makebale;
-use Apsonex\EmailBuilderPhp\Contracts\EmailConfigWithAiDriverConract;
-use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers\Concerns\Fakeable;
+use Apsonex\EmailBuilderPhp\Contracts\HttpQueryDriverContract;
 
-abstract class BaseDriver implements EmailConfigWithAiDriverConract
+abstract class BaseDriver implements HttpQueryDriverContract
 {
     use Makebale, Fakeable;
 
