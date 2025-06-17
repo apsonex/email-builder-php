@@ -23,15 +23,15 @@ beforeEach(function () {
 describe('db_block_sqlite_driver_test', function () {
 
     it('sqlite_db_block_can_store_a_block_with_tenant_and_owner', function () {
-        $block = $this->blocks->store(sampleData(['id' => 1]));
+        $block = $this->blocks->store(sampleBlockData(['id' => 1]));
 
         expect($block['id'])->toBe(1);
     });
 
     it('sqlite_db_block_can_list_blocks_with_keyword_filter_and_tenant', function () {
-        $this->blocks->store(sampleData(['name' => 'One']));
+        $this->blocks->store(sampleBlockData(['name' => 'One']));
 
-        $this->blocks->store(sampleData(['name' => 'Two']));
+        $this->blocks->store(sampleBlockData(['name' => 'Two']));
 
         $results = $this->blocks->index([
             'keyword' => 'One',
@@ -44,16 +44,16 @@ describe('db_block_sqlite_driver_test', function () {
     });
 
     it('sqlite_db_block_can_show_a_specific_block_by_id', function () {
-        $block = $this->blocks->store(sampleData(['name' => 'Two']));
+        $block = $this->blocks->store(sampleBlockData(['name' => 'Two']));
 
-        $found = $this->blocks->show(Arr::only(sampleData(['name' => 'Two']), ['id', 'owner_id', 'tenant_id']));
+        $found = $this->blocks->show(Arr::only(sampleBlockData(['name' => 'Two']), ['id', 'owner_id', 'tenant_id']));
 
         expect($found)->not->toBeNull();
         expect($found['name'])->toBe('Two');
     });
 
     it('sqlite_db_block_can_update_a_block', function () {
-        $block = $this->blocks->store(sampleData());
+        $block = $this->blocks->store(sampleBlockData());
 
         $updated = $this->blocks->update([
             'id' => $block['id'],
@@ -69,7 +69,7 @@ describe('db_block_sqlite_driver_test', function () {
     });
 
     it('sqlite_db_block_can_delete_a_block', function () {
-        $block = $this->blocks->store(sampleData());
+        $block = $this->blocks->store(sampleBlockData());
 
         $deleted = $this->blocks->destroy([
             'id' => $block['id'],

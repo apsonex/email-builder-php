@@ -119,7 +119,7 @@ class FileDriver extends BaseDriver
             'name' => $name,
             'slug' => $input['slug'] ?? '',
             'description' => $input['description'] ?? '',
-            'preview' => $input['preview'] ?? '',
+            'preview' => $input['preview'] ?? null,
             'type' => $input['type'] ?? 'block',
             'category' => $category,
             'config' => $config,
@@ -150,7 +150,7 @@ class FileDriver extends BaseDriver
         $existing['name'] = $input['name'] ?? $existing['name'];
         $existing['slug'] = $input['slug'] ?? $existing['slug'];
         $existing['description'] = $input['description'] ?? $existing['description'];
-        $existing['preview'] = $input['preview'] ?? $existing['preview'];
+        $existing['preview'] = $input['preview'] ?? $existing['preview'] ?? null;
         $existing['type'] = $input['type'] ?? $existing['type'];
         $existing['category'] = $input['category'] ?? $existing['category'];
         $existing['config'] = array_key_exists('config', $input) ? $input['config'] : $existing['config'];

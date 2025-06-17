@@ -130,6 +130,7 @@ class SqliteDriver extends BaseDriver
     {
         $uuid = Str::uuid()->toString();
         $name = $input['name'] ?? null;
+        $preview = $input['preview'] ?? null;
         $category = $input['category'] ?? 'uncategorized';
         $ownerId = (int)($input[$this->ownerKey] ?? 0);
         $tenantId = (int)($input[$this->ownerKey] ?? 0);
@@ -140,8 +141,8 @@ class SqliteDriver extends BaseDriver
             return false;
         }
 
-        $columns = ['uuid', 'name', 'category', 'config', $this->ownerKey];
-        $placeholders = [':uuid', ':name', ':category', ':config', ':owner'];
+        $columns = ['uuid', 'name', 'category', 'config', $this->ownerKey, 'preview'];
+        $placeholders = [':uuid', ':name', ':category', ':config', ':owner', ':preview'];
 
         $values = [
             ':uuid' => $uuid,
@@ -149,6 +150,7 @@ class SqliteDriver extends BaseDriver
             ':category' => (string)$category,
             ':config' => json_encode($config),
             ':owner' => (int)$ownerId,
+            ':preview' => $preview,
         ];
 
         if ($this->multitenancyEnabled) {
@@ -181,6 +183,7 @@ class SqliteDriver extends BaseDriver
             'name' => $name,
             'category' => $category,
             'config' => $config,
+            'preview' => $preview,
             $this->ownerKey => $input[$this->ownerKey] ?? null,
             $this->tenantKey => $this->multitenancyEnabled ? ($input[$this->tenantKey] ?? null) : null,
         ];
@@ -208,6 +211,7 @@ class SqliteDriver extends BaseDriver
             'type = :type',
             'category = :category',
             'config = :config',
+            'preview = :preview',
         ];
 
         $values = [
@@ -218,6 +222,7 @@ class SqliteDriver extends BaseDriver
             ':type' => $input['type'] ?? $existing['type'] ?? 'block',
             ':category' => $input['category'] ?? $existing['category'] ?? '',
             ':config' => is_array($config) ? json_encode($config, true) : $config,
+            ':preview' => $input['preview'] ?? $existing['preview'] ?? null,
         ];
 
         // Base WHERE clause (id)

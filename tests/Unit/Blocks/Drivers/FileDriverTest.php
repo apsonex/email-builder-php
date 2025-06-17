@@ -3,27 +3,6 @@
 use Illuminate\Support\Str;
 use Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers\FileDriver;
 
-function resetTempDir($tempDir, $make = true)
-{
-    if (is_dir($tempDir)) {
-        $it = new RecursiveDirectoryIterator($tempDir, RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($files as $file) {
-            if ($file->isDir()) {
-                rmdir($file->getRealPath());
-            } else {
-                unlink($file->getRealPath());
-            }
-        }
-
-        rmdir($tempDir);
-    }
-
-    if ($make) {
-        mkdir($tempDir, 0755, true);
-    }
-}
-
 beforeEach(function () {
     // Prepare a temporary directory for file storage during tests
     $this->tempDir = sys_get_temp_dir() . '/custom_block_test';
@@ -45,7 +24,7 @@ afterEach(function () {
 describe('db_block_file_driver_test', function () {
 
     it('file_db_block_can_store_a_block_with_tenant_and_owner', function () {
-        $block = $this->driver->store(sampleData());
+        $block = $this->driver->store(sampleBlockData());
 
         expect($block)->toBeArray();
         expect($block['tenant_id'])->toBe(1);
@@ -59,8 +38,8 @@ describe('db_block_file_driver_test', function () {
 
     it('file_db_block_can_index_blocks_filtered_by_tenant_and_owner', function () {
         // Store two blocks with different tenants and owners
-        $block1 = $this->driver->store(sampleData(['tenant_id' => 1, 'owner_id' => 1]));
-        $block2 = $this->driver->store(sampleData(['name' => 'New Name', 'tenant_id' => 2, 'owner_id' => 2]));
+        $block1 = $this->driver->store(sampleBlockData(['tenant_id' => 1, 'owner_id' => 1]));
+        $block2 = $this->driver->store(sampleBlockData(['name' => 'New Name', 'tenant_id' => 2, 'owner_id' => 2]));
 
         // Filter by tenant1 only
         $results = $this->driver->index([
@@ -90,7 +69,7 @@ describe('db_block_file_driver_test', function () {
     });
 
     it('file_db_block_can_show_a_specific_block_by_id_owner_and_tenant', function () {
-        $block = $this->driver->store(sampleData());
+        $block = $this->driver->store(sampleBlockData());
 
         $found = $this->driver->show([
             'id' => $block['id'],
@@ -110,7 +89,7 @@ describe('db_block_file_driver_test', function () {
     });
 
     it('file_db_block_can_update_a_block', function () {
-        $block = $this->driver->store(sampleData());
+        $block = $this->driver->store(sampleBlockData());
 
         $updated = $this->driver->update([
             'id' => $block['id'],
@@ -136,7 +115,7 @@ describe('db_block_file_driver_test', function () {
     });
 
     it('file_db_block_can_destroy_a_block', function () {
-        $block = $this->driver->store(sampleData());
+        $block = $this->driver->store(sampleBlockData());
 
         $deleted = $this->driver->destroy([
             'id' => $block['id'],

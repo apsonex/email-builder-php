@@ -3,28 +3,10 @@
 use Illuminate\Support\Str;
 use Apsonex\EmailBuilderPhp\Support\EmailConfigs\DbEmailConfigDrivers\FileDriver;
 
-function resetDir($dir)
-{
-    if (is_dir($dir)) {
-        $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
-
-        foreach ($files as $file) {
-            $file->isDir() ? rmdir($file->getRealPath()) : unlink($file->getRealPath());
-        }
-
-        rmdir($dir);
-    }
-
-    if (!is_dir($dir)) {
-        mkdir($dir, 0755, true);
-    }
-}
-
 beforeEach(function () {
     $this->tempDir = sys_get_temp_dir() . '/email_config_test';
 
-    resetDir($this->tempDir);
+    resetTempDir($this->tempDir, true);
 
     $this->driver = (new FileDriver())->prepare([
         'storagePath' => $this->tempDir,
@@ -35,158 +17,117 @@ beforeEach(function () {
 });
 
 afterEach(function () {
-    $it = new RecursiveDirectoryIterator($this->tempDir, RecursiveDirectoryIterator::SKIP_DOTS);
-    $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
-
-    foreach ($files as $file) {
-        $file->isDir() ? rmdir($file->getRealPath()) : unlink($file->getRealPath());
-    }
-
-    if (is_dir($this->tempDir)) {
-        rmdir($this->tempDir);
-    }
+    resetTempDir($this->tempDir);
 });
 
-describe('email_config_file_driver_test', function () {
+describe('db_email_config_file_driver_test', function () {
 
-    it('can_store_a_config_with_tenant_and_owner', function () {
-        $config = $this->driver->store([
-            'tenant_id' => 'tenant1',
-            'owner_id' => 'owner1',
-            'data' => [
-                'key' => 'mail_from_name',
-                'value' => 'Gurinder',
-            ]
-        ]);
+    it('file_db_email_config_can_store_a_block_with_tenant_and_owner', function () {
+        $block = $this->driver->store(sampleEmailConfigData());
 
-        dd($config);
+        expect($block)->toBeArray();
+        expect($block['tenant_id'])->toBe(1);
+        expect($block['owner_id'])->toBe(1);
+        expect($block['name'])->toBe($block['name']);
 
-        expect($config)->toBeArray();
-        expect($config['tenant_id'])->toBe('tenant1');
-        expect($config['owner_id'])->toBe('owner1');
-        expect($config['data']['key'])->toBe('mail_from_name');
-        expect($config['data']['value'])->toBe('Gurinder');
-
-        $path = "{$this->tempDir}/tenant_tenant1/owner_owner1/{$config['id']}.json";
+        // Check file exists at expected path
+        $path = "{$this->tempDir}/tenant_{$block['tenant_id']}/owner_{$block['owner_id']}/{$block['uuid']}.json";
         expect(file_exists($path))->toBeTrue();
     });
 
-    it('can_index_configs_by_tenant_and_owner', function () {
-        $config1 = $this->driver->store([
-            'tenant_id' => 'tenant1',
-            'owner_id' => 'owner1',
-            'data' => [
-                'key' => 'site_name',
-                'value' => 'Alpha Site',
-            ]
-        ]);
-        $config2 = $this->driver->store([
-            'tenant_id' => 'tenant2',
-            'owner_id' => 'owner2',
-            'data' => [
-                'key' => 'site_name',
-                'value' => 'Beta Site',
-            ]
-        ]);
+    it('file_db_email_config_can_index_blocks_filtered_by_tenant_and_owner', function () {
+        // Store two blocks with different tenants and owners
+        $block1 = $this->driver->store(sampleEmailConfigData(['tenant_id' => 1, 'owner_id' => 1]));
+        $block2 = $this->driver->store(sampleEmailConfigData(['name' => 'New Name', 'tenant_id' => 2, 'owner_id' => 2]));
 
+        // Filter by tenant1 only
         $results = $this->driver->index([
-            'tenant_id' => 'tenant1',
+            'tenant_id' => 1
         ]);
-
-        dd($results);
 
         expect(count($results))->toBe(1);
-        expect($results[0]['id'])->toBe($config1['id']);
 
+        expect($results[0]['id'])->toBe($block1['id']);
+
+        // Filter by tenant1 and owner1 only
         $results = $this->driver->index([
-            'tenant_id' => 'tenant2',
-            'owner_id' => 'owner2',
+            'tenant_id' => 2,
+            'owner_id' => 2
         ]);
         expect(count($results))->toBe(1);
-        expect($results[0]['id'])->toBe($config2['id']);
+        expect($results[0]['id'])->toBe($block2['id']);
+
+        // Filter by keyword match in name
+        $results = $this->driver->index([
+            'keyword' => 'New Name',
+            'tenant_id' => 2,
+            'owner_id' => 2,
+        ]);
+        expect(count($results))->toBe(1);
+        expect($results[0]['name'])->toContain('New Name');
     });
 
-    it('can_show_a_config_by_id_owner_tenant', function () {
-        $config = $this->driver->store([
-            'tenant_id' => 'tenantX',
-            'owner_id' => 'ownerX',
-            'data' => [
-                'key' => 'theme',
-                'value' => 'dark',
-            ]
-        ]);
+    it('file_db_email_config_can_show_a_specific_block_by_id_owner_and_tenant', function () {
+        $block = $this->driver->store(sampleEmailConfigData());
 
         $found = $this->driver->show([
-            'id' => $config['id'],
-            'owner_id' => 'ownerX',
-            'tenant_id' => 'tenantX',
+            'id' => $block['id'],
+            'owner_id' => 1,
+            'tenant_id' => 1,
         ]);
 
         expect($found)->not->toBeNull();
-        expect($found['data']['key'])->toBe('theme');
 
+        // Wrong tenant returns null
         $notFound = $this->driver->show([
-            'id' => $config['id'],
-            'owner_id' => 'ownerX',
-            'tenant_id' => 'wrong',
+            'id' => $block['id'],
+            'owner_id' => 1,
+            'tenant_id' => 2,
         ]);
         expect($notFound)->toBeNull();
     });
 
-    it('can_update_a_config', function () {
-        $config = $this->driver->store([
-            'tenant_id' => 'tenantU',
-            'owner_id' => 'ownerU',
-            'data' => [
-                'key' => 'footer_text',
-                'value' => 'Old Footer',
-            ]
-        ]);
+    it('file_db_email_config_can_update_a_block', function () {
+        $block = $this->driver->store(sampleEmailConfigData());
 
         $updated = $this->driver->update([
-            'id' => $config['id'],
-            'owner_id' => 'ownerU',
-            'tenant_id' => 'tenantU',
+            'id' => $block['id'],
+            'owner_id' => 1,
+            'tenant_id' => 1,
         ], [
-            'data' => [
-                'value' => 'New Footer',
-            ]
+            'name' => 'New Name',
+            'category' => 'newCat',
+            'config' => ['One' => 'Two']
         ]);
 
         expect($updated)->toBeTrue();
 
         $found = $this->driver->show([
-            'id' => $config['id'],
-            'owner_id' => 'ownerU',
-            'tenant_id' => 'tenantU',
+            'id' => $block['id'],
+            'owner_id' => 1,
+            'tenant_id' => 1,
         ]);
 
-        expect($found['data']['value'])->toBe('New Footer');
-        expect($found['data']['key'])->toBe('footer_text'); // unchanged
+        expect($found['name'])->toBe('New Name');
+        expect($found['config'])->toBe(['One' => 'Two']);
+        expect($found['category'])->toBe('newCat');
     });
 
-    it('can_destroy_a_config', function () {
-        $config = $this->driver->store([
-            'tenant_id' => 'tenantD',
-            'owner_id' => 'ownerD',
-            'data' => [
-                'key' => 'delete_me',
-                'value' => 'gone',
-            ]
-        ]);
+    it('file_db_email_config_can_destroy_a_block', function () {
+        $block = $this->driver->store(sampleEmailConfigData());
 
         $deleted = $this->driver->destroy([
-            'id' => $config['id'],
-            'owner_id' => 'ownerD',
-            'tenant_id' => 'tenantD',
+            'id' => $block['id'],
+            'owner_id' => 1,
+            'tenant_id' => 1,
         ]);
 
         expect($deleted)->toBeTrue();
 
         $found = $this->driver->show([
-            'id' => $config['id'],
-            'owner_id' => 'ownerD',
-            'tenant_id' => 'tenantD',
+            'id' => $block['id'],
+            'owner_id' => 1,
+            'tenant_id' => 1,
         ]);
 
         expect($found)->toBeNull();

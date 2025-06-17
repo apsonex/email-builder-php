@@ -3,10 +3,10 @@
 namespace Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers;
 
 use Apsonex\EmailBuilderPhp\Concerns\Makebale;
+use Apsonex\EmailBuilderPhp\Contracts\DbDriverContract;
 use Apsonex\EmailBuilderPhp\Concerns\InteractsWithDatabase;
-use Apsonex\EmailBuilderPhp\Contracts\DbBlockDriverContract;
 
-abstract class BaseDriver implements DbBlockDriverContract
+abstract class BaseDriver implements DbDriverContract
 {
     use InteractsWithDatabase, Makebale;
 }

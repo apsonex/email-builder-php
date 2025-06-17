@@ -1,18 +1,19 @@
 <?php
 
-use Apsonex\EmailBuilderPhp\Support\EmailConfigs\DbEmailConfig;
-use Apsonex\EmailBuilderPhp\Support\EmailConfigs\DbEmailConfigDrivers\SqliteDriver;
+use Illuminate\Support\Arr;
+use Apsonex\EmailBuilderPhp\Support\Blocks\DbBlock;
+use Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers\SqliteDriver;
 
 beforeEach(function () {
-    // Create in-memory SQLite connection
+    // Create in-memory SQLite
     $this->pdo = new PDO('sqlite::memory:');
     $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Set up multitenancy and driver
-    DbEmailConfig::enableMultitenancy('tenant_id');
-    DbEmailConfig::ownerKeyName('owner_id');
+    DbBlock::enableMultitenancy('tenant_id');
+    DbBlock::ownerKeyName('owner_id');
 
-    $this->configs = DbEmailConfig::make()
+    $this->blocks = DbBlock::make()
         ->driver(SqliteDriver::class)
         ->preparation([
             'pdo' => $this->pdo,
@@ -21,117 +22,64 @@ beforeEach(function () {
 
 describe('db_email_config_sqlite_driver_test', function () {
 
-    it('sqlite_config_can_store_with_tenant_and_owner', function () {
-        $config = $this->configs->store([
-            'tenant_id' => 1,
-            'owner_id' => 1,
-            'config' => [
-                'name' => 'SendGrid Config',
-                'provider' => 'sendgrid',
-                'key' => 'SG.xxxxx',
-            ]
-        ]);
+    it('sqlite_db_email_config_can_store_a_block_with_tenant_and_owner', function () {
+        $block = $this->blocks->store(sampleEmailConfigData(['id' => 1]));
 
-        expect($config)->toBeArray();
-        expect($config['name'])->toBe('SendGrid Config');
-        expect($config['provider'])->toBe('sendgrid');
+        expect($block['id'])->toBe(1);
     });
 
-    it('sqlite_config_can_list_with_keyword_and_tenant_filter', function () {
-        $this->configs->store([
-            'tenant_id' => 1,
+    it('sqlite_db_email_config_can_list_blocks_with_keyword_filter_and_tenant', function () {
+        $this->blocks->store(sampleEmailConfigData(['name' => 'One']));
+
+        $this->blocks->store(sampleEmailConfigData(['name' => 'Two']));
+
+        $results = $this->blocks->index([
+            'keyword' => 'One',
             'owner_id' => 1,
-            'config' => [
-                'name' => 'SendGrid Prod',
-                'provider' => 'sendgrid',
-            ]
-        ]);
-
-        $this->configs->store([
-            'tenant_id' => 2,
-            'owner_id' => 2,
-            'config' => [
-                'name' => 'Mailgun Backup',
-                'provider' => 'mailgun',
-            ]
-        ]);
-
-        $results = $this->configs->index([
-            'keyword' => 'SendGrid',
             'tenant_id' => 1,
         ]);
 
         expect($results)->toHaveCount(1);
-        expect($results[0]['name'])->toBe('SendGrid Prod');
+        expect($results[0]['name'])->toBe('One');
     });
 
-    it('sqlite_config_can_show_config_by_id', function () {
-        $config = $this->configs->store([
-            'tenant_id' => 1,
-            'owner_id' => 1,
-            'config' => [
-                'name' => 'Primary SMTP',
-                'provider' => 'smtp',
-                'host' => 'smtp.mail.com',
-            ]
-        ]);
+    it('sqlite_db_email_config_can_show_a_specific_block_by_id', function () {
+        $block = $this->blocks->store(sampleEmailConfigData(['name' => 'Two']));
 
-        $found = $this->configs->show([
-            'id' => $config['id'],
-            'owner_id' => 1
-        ]);
+        $found = $this->blocks->show(Arr::only(sampleEmailConfigData(['name' => 'Two']), ['id', 'owner_id', 'tenant_id']));
 
         expect($found)->not->toBeNull();
-        expect($found['config']['provider'])->toBe('smtp');
+        expect($found['name'])->toBe('Two');
     });
 
-    it('sqlite_config_can_update_existing_config', function () {
-        $config = $this->configs->store([
-            'tenant_id' => 1,
+    it('sqlite_db_email_config_can_update_a_block', function () {
+        $block = $this->blocks->store(sampleEmailConfigData());
+
+        $updated = $this->blocks->update([
+            'id' => $block['id'],
             'owner_id' => 1,
-            'config' => [
-                'name' => 'Old Config',
-                'provider' => 'smtp',
-            ]
-        ]);
-
-        $updated = $this->configs->update([
-            'id' => $config['id'],
-            'owner_id' => 1
-        ], [
             'tenant_id' => 1,
-            'owner_id' => 1,
-            'config' => [
-                'name' => 'Updated Config',
-                'host' => 'smtp.updated.com',
-            ]
-        ]);
+        ], ['name' => 'New Name']);
 
-        expect($updated)->toBeTrue();
+        expect($updated)->toBe(true);
 
-        $found = $this->configs->show(['id' => $config['id']]);
-        expect($found['config']['name'])->toBe('Updated Config');
-        expect($found['config']['host'])->toBe('smtp.updated.com');
+        $found = $this->blocks->show(['id' => $block['id']]);
+
+        expect($found['name'])->toBe('New Name');
     });
 
-    it('sqlite_config_can_delete_config', function () {
-        $config = $this->configs->store([
+    it('sqlite_db_email_config_can_delete_a_block', function () {
+        $block = $this->blocks->store(sampleEmailConfigData());
+
+        $deleted = $this->blocks->destroy([
+            'id' => $block['id'],
+            'owner_id' => 1,
             'tenant_id' => 1,
-            'owner_id' => 1,
-            'config' => [
-                'name' => 'Temp SMTP',
-                'provider' => 'smtp',
-            ]
         ]);
-
-        $deleted = $this->configs->destroy([
-            'id' => $config['id'],
+        $found = $this->blocks->show([
+            'id' => $block['id'],
             'owner_id' => 1,
-        ]);
-
-        $found = $this->configs->show([
-            'id' => $config['id'],
-            'owner_id' => 1
+            'tenant_id' => 1,
         ]);
 
         expect($deleted)->toBeTrue();

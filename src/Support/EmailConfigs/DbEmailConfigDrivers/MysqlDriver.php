@@ -1,6 +1,6 @@
 <?php
 
-namespace Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers;
+namespace Apsonex\EmailBuilderPhp\Support\EmailConfigs\DbEmailConfigDrivers;
 
 use \PDO;
 use \RuntimeException;
@@ -39,11 +39,12 @@ class MysqlDriver extends BaseDriver
             "id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
             "uuid VARCHAR(36) NOT NULL",
             "name VARCHAR(255) NOT NULL",
-            "slug VARCHAR(255) NOT NULL",
+            "type VARCHAR(255) NOT NULL",
+            "category VARCHAR(255) NOT NULL",
+            "industry VARCHAR(255) NOT NULL",
             "description TEXT NULL",
             "preview TEXT NULL",
             "{$this->ownerKey} BIGINT UNSIGNED NULL",
-            "category VARCHAR(255) NULL",
             "config JSON NOT NULL",
             "created_at DATETIME DEFAULT CURRENT_TIMESTAMP",
             "updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
@@ -109,26 +110,32 @@ class MysqlDriver extends BaseDriver
             throw new RuntimeException("name is required");
         }
 
-        if (empty($data['slug'])) {
-            throw new RuntimeException("slug is required");
+        if (empty($data['industry'])) {
+            throw new RuntimeException("industry is required");
+        }
+
+        if (empty($data['category'])) {
+            throw new RuntimeException("category is required");
         }
 
         $name = $data['name'];
-        $slug = $data['slug'];
+        $type = 'template';
         $preview = $data['preview'] ?? null;
         $category = $data['category'] ?? 'uncategorized';
+        $industry = $data['industry'];
         $description = $data['description'] ?? null;
         $jsonConfig = json_encode($data['config'] ?? []);
         $uuid = $this->generateUuid();
 
-        $columns = [$this->ownerKey, 'name', 'category', 'description', 'slug', 'config', 'uuid', 'preview'];
-        $placeholders = [':owner_id', ':name', ':category', ':description', ':slug', ':config', ':uuid', ':preview'];
+        $columns = [$this->ownerKey, 'name', 'category', 'description', 'type', 'industry', 'config', 'uuid', 'preview'];
+        $placeholders = [':owner_id', ':name', ':category', ':description', ':type', ':industry', ':config', ':uuid', ':preview'];
         $bindings = [
             ':owner_id' => $data[$this->ownerKey],
             ':name' => $name,
             ':category' => $category,
             ':description' => $description,
-            ':slug' => $slug,
+            ':type' => $type,
+            ':industry' => $industry,
             ':config' => $jsonConfig,
             ':uuid' => $uuid,
             ':preview' => $preview,
@@ -249,6 +256,7 @@ class MysqlDriver extends BaseDriver
 
         // Prepare updated fields, fallback to existing if not provided
         $name = $data['name'] ?? $existing['name'];
+        $industry = $data['industry'] ?? $existing['industry'];
         $category = $data['category'] ?? $existing['category'];
         $preview = $data['preview'] ?? $existing['preview'];
         $description = $data['description'] ?? $existing['description'];
@@ -262,6 +270,7 @@ class MysqlDriver extends BaseDriver
 
         $sql = "UPDATE {$this->table} SET
         name = :name,
+        industry = :industry,
         category = :category,
         preview = :preview,
         description = :description,
@@ -271,6 +280,7 @@ class MysqlDriver extends BaseDriver
 
         $params = [
             ':name' => $name,
+            ':industry' => $industry,
             ':category' => $category,
             ':preview' => $preview,
             ':description' => $description,
@@ -335,8 +345,9 @@ class MysqlDriver extends BaseDriver
             $this->ownerKey => $row[$this->ownerKey] ?? null,
             'name' => $row['name'] ?? null,
             'category' => $row['category'] ?? null,
+            'industry' => $row['industry'] ?? null,
+            'type' => $row['type'] ?? null,
             'description' => $row['description'] ?? null,
-            'slug' => $row['slug'] ?? null,
             'preview' => $row['preview'] ?? null,
             'config' => isset($row['config'])
                 ? (is_string($row['config']) ? json_decode($row['config'], true) : $row['config'])

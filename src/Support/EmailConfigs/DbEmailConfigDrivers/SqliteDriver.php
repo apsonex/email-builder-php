@@ -2,14 +2,11 @@
 
 namespace Apsonex\EmailBuilderPhp\Support\EmailConfigs\DbEmailConfigDrivers;
 
-use PDO;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
-use Apsonex\EmailBuilderPhp\Contracts\DbEmailConfigDriverContract;
 
-class SqliteDriver extends BaseDriver implements DbEmailConfigDriverContract
+class SqliteDriver extends BaseDriver
 {
-    protected PDO $pdo;
+    protected \PDO $pdo;
 
     protected bool $tableExist = false;
 
@@ -21,8 +18,8 @@ class SqliteDriver extends BaseDriver implements DbEmailConfigDriverContract
 
         $pdo = $args['pdo'] ?? null;
 
-        if (!$pdo instanceof PDO) {
-            throw new InvalidArgumentException('A valid PDO instance must be provided.');
+        if (empty($pdo) || !$pdo instanceof \PDO) {
+            throw new \InvalidArgumentException('A valid PDO instance must be provided.');
         }
 
         $this->pdo = $pdo;
@@ -34,15 +31,22 @@ class SqliteDriver extends BaseDriver implements DbEmailConfigDriverContract
 
     protected function prepareTable(): void
     {
-        $tenantColumn = $this->multitenancyEnabled ? ", {$this->tenantKey} TEXT" : "";
+        $tenantColumn = $this->multitenancyEnabled
+            ? ", {$this->tenantKey} INTEGER"
+            : "";
 
         $sql = <<<SQL
         CREATE TABLE IF NOT EXISTS {$this->table} (
-            id TEXT PRIMARY KEY,
-            name TEXT,
-            provider TEXT,
-            config JSON,
-            {$this->ownerKey} TEXT
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            uuid TEXT, -- uuid
+            name TEXT, -- block name
+            type TEXT, -- type: default to `template`
+            category TEXT, -- block unique slug
+            industry TEXT, -- block unique slug
+            description TEXT, -- block description
+            preview TEXT, -- block preview image path
+            config TEXT, -- array encoded as string
+            {$this->ownerKey} INTEGER
             {$tenantColumn}
         )
         SQL;
@@ -57,14 +61,30 @@ class SqliteDriver extends BaseDriver implements DbEmailConfigDriverContract
         $query = "SELECT * FROM {$this->table} WHERE 1=1";
         $params = [];
 
+        if (!empty($filters['uuid'])) {
+            $query .= " AND uuid LIKE :uuid";
+            $params[':uuid'] = '%' . $filters['uuid'] . '%';
+        }
+
+        if (!empty($filters['name'])) {
+            $query .= " AND name LIKE :name";
+            $params[':name'] = '%' . $filters['name'] . '%';
+        }
+
         if (!empty($filters['keyword'])) {
-            $query .= " AND name LIKE :keyword";
+            // Assuming you want to search in name and description for keyword
+            $query .= " AND (name LIKE :keyword OR description LIKE :keyword)";
             $params[':keyword'] = '%' . $filters['keyword'] . '%';
         }
 
-        if (!empty($filters['provider'])) {
-            $query .= " AND provider = :provider";
-            $params[':provider'] = $filters['provider'];
+        if (!empty($filters['category'])) {
+            $query .= " AND category = :category";
+            $params[':category'] = $filters['category'];
+        }
+
+        if (!empty($filters['industry'])) {
+            $query .= " AND industry = :industry";
+            $params[':industry'] = $filters['industry'];
         }
 
         if ($this->multitenancyEnabled && !empty($filters[$this->tenantKey])) {
@@ -72,17 +92,24 @@ class SqliteDriver extends BaseDriver implements DbEmailConfigDriverContract
             $params[':tenant'] = $filters[$this->tenantKey];
         }
 
+        if (!empty($filters[$this->ownerKey])) {
+            $query .= " AND {$this->ownerKey} = :owner";
+            $params[':owner'] = $filters[$this->ownerKey];
+        }
+
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($params);
 
         $results = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            // Decode config JSON string into 'config' key, not 'data' (your table has 'config' column)
             $row['config'] = json_decode($row['config'], true);
             $results[] = $row;
         }
 
         return $results;
     }
+
 
     public function show(array $filters): ?array
     {
@@ -91,83 +118,140 @@ class SqliteDriver extends BaseDriver implements DbEmailConfigDriverContract
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE {$whereClause} LIMIT 1");
         $stmt->execute($params);
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if (!$row) return null;
+        if (!$row) {
+            return null;
+        }
 
+        // Decode JSON config column
         $row['config'] = json_decode($row['config'], true);
 
         return $row;
     }
 
+
     public function store(array $input): array|bool
     {
-        $id = Str::uuid()->toString();
+        $uuid = Str::uuid()->toString();
+        $name = $input['name'] ?? null;
+        $category = $input['category'] ?? null;
+        $industry = $input['industry'] ?? null;
+        $type = 'template';
+        $description = $input['description'] ?? null;
+        $ownerId = (int)($input[$this->ownerKey] ?? 0);
+        $tenantId = (int)($input[$this->ownerKey] ?? 0);
         $config = $input['config'] ?? [];
 
-        $columns = ['id', 'name', 'provider', 'config', $this->ownerKey];
-        $placeholders = [':id', ':name', ':provider', ':config', ':owner'];
+        if (!$name || ($ownerId <= 0) || ($this->multitenancyEnabled && $tenantId <= 0) || !$industry || !$category) {
+            // Name is required, fail early
+            return false;
+        }
+
+        $columns = ['uuid', 'name', 'type', 'category', 'industry', 'config', 'description', $this->ownerKey];
+        $placeholders = [':uuid', ':name', ':type', ':category', ':industry', ':config', ':description', ':owner'];
 
         $values = [
-            ':id' => $id,
-            ':name' => $config['name'] ?? '',
-            ':provider' => $config['provider'] ?? '',
+            ':uuid' => $uuid,
+            ':name' => (string)$name,
+            ':type' => (string)$type,
+            ':category' => (string)$category,
+            ':industry' => (string)$industry,
+            ':description' => (string)$description,
             ':config' => json_encode($config),
-            ':owner' => $input[$this->ownerKey] ?? null,
+            ':owner' => (int)$ownerId,
         ];
 
         if ($this->multitenancyEnabled) {
             $columns[] = $this->tenantKey;
             $placeholders[] = ':tenant';
-            $values[':tenant'] = $input[$this->tenantKey] ?? null;
+            $values[':tenant'] = $tenantId;
         }
 
         $sql = sprintf(
-            "INSERT INTO {$this->table} (%s) VALUES (%s)",
+            "INSERT INTO %s (%s) VALUES (%s)",
+            $this->table,
             implode(', ', $columns),
             implode(', ', $placeholders)
         );
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($values);
+        $success = $stmt->execute($values);
 
-        return array_merge(['id' => $id], $config);
+        if (!$success) {
+            return false;
+        }
+
+        // Fetch the last inserted ID if using AUTOINCREMENT id
+        $lastId = $this->pdo->lastInsertId();
+
+        // Return a consistent array with stored data (including id and decoded config)
+        return [
+            'id' => (int)$lastId,
+            'uuid' => $uuid,
+            'name' => $name,
+            'type' => $type,
+            'industry' => $industry,
+            'description' => $description,
+            'category' => $category,
+            'config' => $config,
+            $this->ownerKey => $input[$this->ownerKey] ?? null,
+            ...($this->multitenancyEnabled ? [
+                $this->tenantKey => $input[$this->tenantKey]
+            ] : []),
+        ];
     }
 
     public function update(array $whereClause, array $input): bool
     {
         $existing = $this->show($whereClause);
 
-        if (!$existing) return false;
+        if (!$existing) {
+            return false;
+        }
 
-        $config = array_merge($existing['config'], $input['config'] ?? []);
+        // Determine config value: overwrite only if present in input
+        $config = array_key_exists('config', $input)
+            ? json_encode($input['config'])
+            : $existing['config'];
 
+        // Updateable fields (never update id, owner, or tenant keys)
         $fields = [
             'name = :name',
-            'provider = :provider',
+            'industry = :industry',
+            'description = :description',
+            'preview = :preview',
+            'category = :category',
             'config = :config',
-            "{$this->ownerKey} = :owner"
         ];
 
         $values = [
-            ':name' => $config['name'] ?? '',
-            ':provider' => $config['provider'] ?? '',
-            ':config' => json_encode($config),
-            ':owner' => $input[$this->ownerKey] ?? null,
-            ':id' => $whereClause['id'],
+            ':name' => $input['name'] ?? $existing['name'],
+            ':industry' => $input['industry'] ?? $existing['industry'],
+            ':description' => $input['description'] ?? $existing['description'] ?? null,
+            ':preview' => $input['preview'] ?? $existing['preview'] ?? null,
+            ':category' => $input['category'] ?? $existing['category'] ?? '',
+            ':config' => is_array($config) ? json_encode($config, true) : $config,
         ];
 
-        if ($this->multitenancyEnabled) {
-            $fields[] = "{$this->tenantKey} = :tenant";
-            $values[':tenant'] = $input[$this->tenantKey] ?? null;
+        // Base WHERE clause (id)
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $fields) . " WHERE id = :id";
+        $whereValues = [':id' => $whereClause['id']];
+
+        // Tenant scope
+        if ($this->multitenancyEnabled && isset($whereClause[$this->tenantKey])) {
+            $sql .= " AND {$this->tenantKey} = :tenant";
+            $whereValues[':tenant'] = $whereClause[$this->tenantKey];
         }
 
-        $sql = "UPDATE {$this->table} SET " . implode(', ', $fields) . " WHERE id = :id";
+        // Owner scope
+        if (!empty($this->ownerKey) && isset($whereClause[$this->ownerKey])) {
+            $sql .= " AND {$this->ownerKey} = :owner";
+            $whereValues[':owner'] = $whereClause[$this->ownerKey];
+        }
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($values);
-
-        return true;
+        return $stmt->execute(array_merge($values, $whereValues));
     }
 
     public function destroy(array $whereClause): bool
@@ -178,7 +262,7 @@ class SqliteDriver extends BaseDriver implements DbEmailConfigDriverContract
         return $stmt->execute($params);
     }
 
-    protected function prepareWhereClauses(array $whereClause): array
+    protected function prepareWhereClauses($whereClause): array
     {
         $conditions = [];
         $params = [];
