@@ -1,0 +1,54 @@
+{
+    "name": "apsonex/email-builder-php",
+    "description": "Email builder PHP package",
+    "keywords": [
+        "apsonex",
+        "email-builder-php"
+    ],
+    "homepage": "https://github.com/apsonex/email-builder-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Apsonex Inc.",
+            "email": "info@apsonex.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2|^8.3|^8.4",
+        "apsonex/font": "^1.0",
+        "illuminate/collections": "*",
+        "illuminate/filesystem": "^12.18",
+        "illuminate/http": "^12.18"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "orchestra/testbench": "^10.4",
+        "pestphp/pest": "^3.8",
+        "pestphp/pest-plugin-laravel": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Apsonex\\EmailBuilderPhp\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,0 +1,62 @@
+{
+    "name": "Hero with Background Image",
+    "type": "block",
+    "description": "A visually striking hero section with a background image, headline, and call-to-action button. Ideal for promotional or welcome emails.",
+    "config": {
+        "section": {
+            "id": "[BLOCK_ID]",
+            "type": "section",
+            "config": {
+                "padding": "0px",
+                "background-color": "#ffffff",
+                "column-stack": "stack"
+            },
+            "meta": {
+                "ai-prompt": "A modern, clean background image that represents the brand's identity",
+                "size": "600x300",
+                "images-search-keyword": "modern abstract background"
+            },
+            "content": [
+                {
+                    "id": "[BLOCK_ID]",
+                    "type": "column",
+                    "config": {
+                        "width": "100%",
+                        "padding": "20px 0px 20px 0px",
+                        "inner-padding": "0px"
+                    },
+                    "content": [
+                        {
+                            "id": "[BLOCK_ID]",
+                            "type": "text",
+                            "config": {
+                                "align": "center",
+                                "color": "#ffffff",
+                                "font-family": "'Open Sans', sans-serif",
+                                "font-size": "24px",
+                                "font-weight": "700",
+                                "padding": "0px 0px 10px 0px"
+                            },
+                            "content": "<h1>Welcome to [BUSINESS_NAME]<\/h1>"
+                        },
+                        {
+                            "id": "[BLOCK_ID]",
+                            "type": "button",
+                            "config": {
+                                "href": "[BUSINESS_WEBSITE]",
+                                "background-color": "#007BFF",
+                                "color": "#ffffff",
+                                "font-family": "'Open Sans', sans-serif",
+                                "font-size": "16px",
+                                "font-weight": "600",
+                                "padding": "10px 20px 10px 20px",
+                                "border-radius": "5px"
+                            },
+                            "content": "Explore More"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

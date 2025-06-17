@@ -1,0 +1,307 @@
+{
+    "industry": {
+        "slug": "accounting",
+        "label": "Accounting"
+    },
+    "subjects": {
+        "client-communication": {
+            "category": {
+                "label": "Client Communication",
+                "slug": "client-communication"
+            },
+            "items": {
+                "your-monthly-financial-summary-is-ready": "Your Monthly Financial Summary is Ready",
+                "important-update-regarding-your-account": "Important Update Regarding Your Account",
+                "action-required-review-your-quarterly-statements": "Action Required: Review Your Quarterly Statements",
+                "upcoming-meeting-to-discuss-your-financials": "Upcoming Meeting to Discuss Your Financials",
+                "your-tax-documents-are-ready-for-review": "Your Tax Documents Are Ready for Review",
+                "reminder-upcoming-deadline-for-tax-submissions": "Reminder: Upcoming Deadline for Tax Submissions",
+                "weve-noticed-an-anomaly-in-your-recent-transactions": "We’ve Noticed an Anomaly in Your Recent Transactions",
+                "how-we-can-help-you-save-more-this-year": "How We Can Help You Save More This Year",
+                "your-personalized-financial-health-report": "Your Personalized Financial Health Report",
+                "lets-optimize-your-financial-strategy-together": "Let’s Optimize Your Financial Strategy Together"
+            }
+        },
+        "internal-updates": {
+            "category": {
+                "label": "Internal Updates",
+                "slug": "internal-updates"
+            },
+            "items": {
+                "team-meeting-q2-financial-review": "Team Meeting: Q2 Financial Review",
+                "update-on-new-accounting-software-implementation": "Update on New Accounting Software Implementation",
+                "reminder-end-of-month-closing-procedures": "Reminder: End of Month Closing Procedures",
+                "new-policies-on-expense-reporting": "New Policies on Expense Reporting",
+                "training-session-latest-tax-law-changes": "Training Session: Latest Tax Law Changes",
+                "important-changes-to-client-billing-processes": "Important: Changes to Client Billing Processes",
+                "deadline-approaching-annual-audit-preparation": "Deadline Approaching: Annual Audit Preparation",
+                "feedback-requested-on-new-workflow-tools": "Feedback Requested on New Workflow Tools",
+                "celebrating-our-teams-achievements-this-quarter": "Celebrating Our Team’s Achievements This Quarter"
+            }
+        },
+        "marketing": {
+            "category": {
+                "label": "Marketing",
+                "slug": "marketing"
+            },
+            "items": {
+                "exclusive-offer-free-financial-consultation": "Exclusive Offer: Free Financial Consultation",
+                "how-our-services-can-save-you-money": "How Our Services Can Save You Money",
+                "client-success-story-how-we-helped-xyz-corp-save-20": "Client Success Story: How We Helped XYZ Corp Save 20%",
+                "introducing-our-new-tax-optimization-service": "Introducing Our New Tax Optimization Service",
+                "limited-time-discount-on-annual-accounting-services": "Limited Time Discount on Annual Accounting Services",
+                "webinar-invite-tax-strategies-for-small-businesses": "Webinar Invite: Tax Strategies for Small Businesses",
+                "why-choose-us-for-your-accounting-needs": "Why Choose Us for Your Accounting Needs?",
+                "special-offer-refer-a-friend-and-get-a-discount": "Special Offer: Refer a Friend and Get a Discount",
+                "your-guide-to-a-stress-free-tax-season": "Your Guide to a Stress-Free Tax Season",
+                "join-our-loyalty-program-and-enjoy-exclusive-benefits": "Join Our Loyalty Program and Enjoy Exclusive Benefits"
+            }
+        },
+        "tax-season": {
+            "category": {
+                "label": "Tax Season",
+                "slug": "tax-season"
+            },
+            "items": {
+                "tax-season-is-here-are-you-ready": "Tax Season is Here: Are You Ready?",
+                "last-chance-to-maximize-your-deductions": "Last Chance to Maximize Your Deductions",
+                "important-tax-deadlines-you-need-to-know": "Important Tax Deadlines You Need to Know",
+                "how-to-avoid-common-tax-filing-mistakes": "How to Avoid Common Tax Filing Mistakes",
+                "your-step-by-step-guide-to-a-smooth-tax-season": "Your Step-by-Step Guide to a Smooth Tax Season",
+                "tax-planning-strategies-for-the-upcoming-year": "Tax Planning Strategies for the Upcoming Year",
+                "reminder-schedule-your-tax-preparation-meeting": "Reminder: Schedule Your Tax Preparation Meeting",
+                "tax-changes-this-year-what-you-need-to-know": "Tax Changes This Year: What You Need to Know",
+                "maximize-your-refund-with-these-tips": "Maximize Your Refund with These Tips"
+            }
+        },
+        "newsletter": {
+            "category": {
+                "label": "Newsletter",
+                "slug": "newsletter"
+            },
+            "items": {
+                "this-month-in-finance-key-updates-you-should-know": "This Month in Finance: Key Updates You Should Know",
+                "expert-tips-to-improve-your-financial-health": "Expert Tips to Improve Your Financial Health",
+                "industry-trends-whats-new-in-accounting": "Industry Trends: What’s New in Accounting",
+                "client-spotlight-success-stories-from-our-community": "Client Spotlight: Success Stories from Our Community",
+                "upcoming-events-and-workshops-for-you": "Upcoming Events and Workshops for You",
+                "how-to-stay-compliant-with-latest-regulations": "How to Stay Compliant with Latest Regulations",
+                "behind-the-scenes-meet-our-team": "Behind the Scenes: Meet Our Team",
+                "your-questions-answered-finance-faqs": "Your Questions Answered: Finance FAQs",
+                "resources-to-help-you-navigate-financial-challenges": "Resources to Help You Navigate Financial Challenges",
+                "this-month-in-accounting-latest-trends": "This Month in Accounting: Latest Trends",
+                "accounting-insights-monthly-roundup": "Accounting Insights: Monthly Roundup",
+                "tax-tips-and-updates-newsletter": "Tax Tips and Updates Newsletter",
+                "financial-strategies-for-growing-businesses": "Financial Strategies for Growing Businesses",
+                "your-monthly-accounting-digest": "Your Monthly Accounting Digest",
+                "expert-advice-accounting-best-practices": "Expert Advice: Accounting Best Practices",
+                "industry-news-and-updates-for-accountants": "Industry News and Updates for Accountants",
+                "how-to-stay-ahead-in-accounting": "How to Stay Ahead in Accounting",
+                "monthly-highlights-from-our-accounting-team": "Monthly Highlights from Our Accounting Team",
+                "exclusive-content-accounting-webinars-and-more": "Exclusive Content: Accounting Webinars and More"
+            }
+        },
+        "appointment-reminders": {
+            "category": {
+                "label": "Appointment Reminders",
+                "slug": "appointment-reminders"
+            },
+            "items": {
+                "reminder-your-appointment-tomorrow-at-2-pm": "Reminder: Your Appointment Tomorrow at 2 PM",
+                "dont-forget-scheduled-call-to-discuss-your-finances": "Don’t Forget: Scheduled Call to Discuss Your Finances",
+                "your-financial-review-meeting-is-coming-up": "Your Financial Review Meeting is Coming Up",
+                "were-looking-forward-to-our-meeting-next-week": "We’re Looking Forward to Our Meeting Next Week",
+                "last-chance-to-reschedule-your-appointment": "Last Chance to Reschedule Your Appointment",
+                "preparing-for-our-meeting-what-you-need-to-bring": "Preparing for Our Meeting: What You Need to Bring",
+                "confirming-your-upcoming-consultation": "Confirming Your Upcoming Consultation",
+                "let-us-know-if-you-need-to-adjust-your-appointment": "Let Us Know if You Need to Adjust Your Appointment",
+                "reminder-your-accounting-consultation-tomorrow": "Reminder: Your Accounting Consultation Tomorrow",
+                "upcoming-meeting-financial-review": "Upcoming Meeting: Financial Review",
+                "dont-forget-tax-planning-session-scheduled": "Don't Forget: Tax Planning Session Scheduled",
+                "appointment-confirmation-budget-discussion": "Appointment Confirmation: Budget Discussion",
+                "your-meeting-with-the-accounting-team": "Your Meeting with the Accounting Team",
+                "quick-reminder-year-end-review-tomorrow": "Quick Reminder: Year-End Review Tomorrow",
+                "scheduled-call-audit-preparation": "Scheduled Call: Audit Preparation",
+                "meeting-agenda-attached-for-your-review": "Meeting Agenda Attached for Your Review",
+                "confirming-your-appointment-time": "Confirming Your Appointment Time",
+                "last-chance-to-reschedule-your-meeting": "Last Chance to Reschedule Your Meeting"
+            }
+        },
+        "payment-reminders": {
+            "category": {
+                "label": "Payment Reminders",
+                "slug": "payment-reminders"
+            },
+            "items": {
+                "friendly-reminder-invoice-due-soon": "Friendly Reminder: Invoice Due Soon",
+                "overdue-invoice-please-submit-payment": "Overdue Invoice: Please Submit Payment",
+                "your-payment-is-due-in-3-days": "Your Payment is Due in 3 Days",
+                "thank-you-for-your-recent-payment": "Thank You for Your Recent Payment",
+                "payment-received-next-steps": "Payment Received: Next Steps",
+                "issue-with-your-last-payment-lets-resolve-it": "Issue with Your Last Payment: Let’s Resolve It",
+                "how-to-set-up-automatic-payments-for-convenience": "How to Set Up Automatic Payments for Convenience",
+                "payment-options-available-to-suit-your-needs": "Payment Options Available to Suit Your Needs"
+            }
+        },
+        "welcome-emails": {
+            "category": {
+                "label": "Welcome Emails",
+                "slug": "welcome-emails"
+            },
+            "items": {
+                "welcome-aboard-getting-started-with-us": "Welcome Aboard: Getting Started with Us",
+                "your-journey-to-better-finances-starts-here": "Your Journey to Better Finances Starts Here",
+                "heres-what-to-expect-as-our-new-client": "Here’s What to Expect as Our New Client",
+                "meet-your-dedicated-accounting-team": "Meet Your Dedicated Accounting Team",
+                "first-steps-how-to-access-your-client-portal": "First Steps: How to Access Your Client Portal",
+                "were-excited-to-work-with-you": "We’re Excited to Work with You!",
+                "your-welcome-kit-resources-to-get-started": "Your Welcome Kit: Resources to Get Started",
+                "lets-make-this-a-successful-partnership": "Let’s Make This a Successful Partnership"
+            }
+        },
+        "invoice-reminders": {
+            "category": {
+                "label": "Invoice Reminders",
+                "slug": "invoice-reminders"
+            },
+            "items": {
+                "invoice-12345-due-tomorrow-please-settle": "Invoice #12345 Due Tomorrow - Please Settle",
+                "friendly-reminder-invoice-12345-overdue": "Friendly Reminder: Invoice #12345 Overdue",
+                "urgent-payment-required-for-invoice-12345": "Urgent: Payment Required for Invoice #12345",
+                "invoice-12345-payment-past-due": "Invoice #12345 - Payment Past Due",
+                "action-required-invoice-12345-payment": "Action Required: Invoice #12345 Payment",
+                "final-notice-invoice-12345-payment-due": "Final Notice: Invoice #12345 Payment Due",
+                "invoice-12345-reminder-for-payment": "Invoice #12345 - Reminder for Payment",
+                "payment-overdue-for-invoice-12345": "Payment Overdue for Invoice #12345",
+                "invoice-12345-immediate-payment-requested": "Invoice #12345 - Immediate Payment Requested",
+                "reminder-invoice-12345-due-in-3-days": "Reminder: Invoice #12345 Due in 3 Days"
+            }
+        },
+        "tax-updates": {
+            "category": {
+                "label": "Tax Updates",
+                "slug": "tax-updates"
+            },
+            "items": {
+                "important-tax-deadline-approaching": "Important Tax Deadline Approaching",
+                "tax-filing-reminder-deadline-next-week": "Tax Filing Reminder: Deadline Next Week",
+                "updates-to-tax-laws-affecting-your-business": "Updates to Tax Laws Affecting Your Business",
+                "tax-season-checklist-for-2023": "Tax Season Checklist for 2023",
+                "how-to-maximize-your-tax-deductions": "How to Maximize Your Tax Deductions",
+                "tax-planning-strategies-for-the-upcoming-year": "Tax Planning Strategies for the Upcoming Year",
+                "reminder-quarterly-taxes-due-soon": "Reminder: Quarterly Taxes Due Soon",
+                "changes-in-tax-legislation-you-should-know": "Changes in Tax Legislation You Should Know",
+                "preparing-for-tax-season-tips-and-tricks": "Preparing for Tax Season: Tips and Tricks",
+                "tax-audit-what-you-need-to-prepare": "Tax Audit: What You Need to Prepare"
+            }
+        },
+        "financial-reports": {
+            "category": {
+                "label": "Financial Reports",
+                "slug": "financial-reports"
+            },
+            "items": {
+                "your-monthly-financial-report-is-ready": "Your Monthly Financial Report is Ready",
+                "quarterly-financial-summary-attached": "Quarterly Financial Summary Attached",
+                "annual-financial-review-key-insights": "Annual Financial Review: Key Insights",
+                "financial-performance-report-review-needed": "Financial Performance Report - Review Needed",
+                "budget-vs-actuals-report-for-q1": "Budget vs. Actuals Report for Q1",
+                "profit-and-loss-statement-latest-update": "Profit and Loss Statement: Latest Update",
+                "cash-flow-analysis-report-action-required": "Cash Flow Analysis Report - Action Required",
+                "financial-dashboard-snapshot-of-your-business": "Financial Dashboard: Snapshot of Your Business",
+                "year-end-financial-statements-available": "Year-End Financial Statements Available",
+                "financial-health-check-findings-and-recommendations": "Financial Health Check: Findings and Recommendations"
+            }
+        },
+        "client-onboarding": {
+            "category": {
+                "label": "Client Onboarding",
+                "slug": "client-onboarding"
+            },
+            "items": {
+                "welcome-to-our-accounting-services": "Welcome to Our Accounting Services",
+                "next-steps-in-your-onboarding-process": "Next Steps in Your Onboarding Process",
+                "your-accounting-portal-access-details": "Your Accounting Portal Access Details",
+                "getting-started-with-our-accounting-team": "Getting Started with Our Accounting Team",
+                "onboarding-checklist-for-new-clients": "Onboarding Checklist for New Clients",
+                "schedule-your-kickoff-meeting": "Schedule Your Kickoff Meeting",
+                "important-documents-needed-for-onboarding": "Important Documents Needed for Onboarding",
+                "your-dedicated-accountant-introduction": "Your Dedicated Accountant: Introduction",
+                "onboarding-complete-whats-next": "Onboarding Complete: What's Next?",
+                "how-well-support-your-financial-goals": "How We'll Support Your Financial Goals"
+            }
+        },
+        "payment-confirmations": {
+            "category": {
+                "label": "Payment Confirmations",
+                "slug": "payment-confirmations"
+            },
+            "items": {
+                "payment-received-thank-you": "Payment Received - Thank You",
+                "confirmation-of-your-recent-payment": "Confirmation of Your Recent Payment",
+                "receipt-for-payment-12345-attached": "Receipt for Payment #12345 Attached",
+                "your-payment-has-been-processed": "Your Payment Has Been Processed",
+                "thank-you-for-your-timely-payment": "Thank You for Your Timely Payment",
+                "payment-acknowledgment-for-invoice-12345": "Payment Acknowledgment for Invoice #12345",
+                "transaction-confirmation-payment-received": "Transaction Confirmation: Payment Received",
+                "your-account-has-been-credited": "Your Account Has Been Credited",
+                "payment-successfully-completed": "Payment Successfully Completed",
+                "receipt-payment-for-services-rendered": "Receipt: Payment for Services Rendered"
+            }
+        },
+        "budget-planning": {
+            "category": {
+                "label": "Budget Planning",
+                "slug": "budget-planning"
+            },
+            "items": {
+                "upcoming-budget-planning-session": "Upcoming Budget Planning Session",
+                "your-budget-review-meeting-agenda": "Your Budget Review Meeting Agenda",
+                "preliminary-budget-draft-for-approval": "Preliminary Budget Draft for Approval",
+                "budget-adjustments-recommended": "Budget Adjustments Recommended",
+                "annual-budget-planning-key-dates": "Annual Budget Planning: Key Dates",
+                "how-to-prepare-for-budget-discussions": "How to Prepare for Budget Discussions",
+                "budget-forecast-for-next-fiscal-year": "Budget Forecast for Next Fiscal Year",
+                "budget-approval-required-by-eod": "Budget Approval Required by EOD",
+                "budget-variance-report-analysis-needed": "Budget Variance Report: Analysis Needed",
+                "strategies-for-effective-budget-management": "Strategies for Effective Budget Management"
+            }
+        },
+        "audit-notifications": {
+            "category": {
+                "label": "Audit Notifications",
+                "slug": "audit-notifications"
+            },
+            "items": {
+                "upcoming-audit-preparation-checklist": "Upcoming Audit: Preparation Checklist",
+                "audit-schedule-confirmation": "Audit Schedule Confirmation",
+                "important-audit-documentation-required": "Important: Audit Documentation Required",
+                "audit-findings-report-attached": "Audit Findings Report Attached",
+                "post-audit-review-meeting-scheduled": "Post-Audit Review Meeting Scheduled",
+                "audit-compliance-reminder": "Audit Compliance Reminder",
+                "your-audit-is-scheduled-for-next-month": "Your Audit is Scheduled for Next Month",
+                "audit-results-key-takeaways": "Audit Results: Key Takeaways",
+                "how-to-prepare-for-your-financial-audit": "How to Prepare for Your Financial Audit",
+                "audit-completion-next-steps": "Audit Completion: Next Steps"
+            }
+        },
+        "software-updates": {
+            "category": {
+                "label": "Software Updates",
+                "slug": "software-updates"
+            },
+            "items": {
+                "new-accounting-software-features-available": "New Accounting Software Features Available",
+                "software-update-whats-new": "Software Update: What's New",
+                "maintenance-scheduled-for-accounting-platform": "Maintenance Scheduled for Accounting Platform",
+                "how-to-use-the-latest-software-update": "How to Use the Latest Software Update",
+                "software-upgrade-benefits-and-changes": "Software Upgrade: Benefits and Changes",
+                "training-session-for-new-software-features": "Training Session for New Software Features",
+                "important-software-update-required": "Important: Software Update Required",
+                "enhancements-to-your-accounting-tools": "Enhancements to Your Accounting Tools",
+                "software-migration-timeline-and-steps": "Software Migration: Timeline and Steps",
+                "feedback-requested-on-new-software-features": "Feedback Requested on New Software Features"
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+[
+    {
+        "label": "Hero",
+        "slug": "hero",
+        "description": "A large, eye-catching banner usually containing an image, headline, and call-to-action."
+    },
+    {
+        "label": "Header",
+        "slug": "header",
+        "description": "Top section of the email that often includes a logo, navigation, and preheader text."
+    },
+    ...
+]

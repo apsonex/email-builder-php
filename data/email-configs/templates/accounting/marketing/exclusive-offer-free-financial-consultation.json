@@ -1,0 +1,379 @@
+{
+    "name": "Exclusive Offer: Free Financial Consultation",
+    "type": "template",
+    "industry": "accounting",
+    "category": "marketing",
+    "config": {
+        "head": {
+            "breakpoint": "480px",
+            "fonts": [
+                {
+                    "key": "open-sans",
+                    "provider": "bunny",
+                    "category": "sans-serif",
+                    "family": "Open Sans",
+                    "urlString": "open-sans:300,400,500,600,700,800,300i,400i,500i,600i,700i,800i"
+                },
+                {
+                    "key": "lato",
+                    "provider": "bunny",
+                    "category": "sans-serif",
+                    "family": "Lato",
+                    "urlString": "lato:100,300,400,700,900,100i,300i,400i,700i,900i"
+                },
+                {
+                    "key": "league-gothic",
+                    "provider": "google",
+                    "category": "sans-serif",
+                    "family": "League Gothic",
+                    "urlString": "league-gothic:400"
+                },
+                {
+                    "key": "roboto",
+                    "provider": "bunny",
+                    "category": "sans-serif",
+                    "family": "Roboto",
+                    "urlString": "roboto:100,300,400,500,700,900,100i,300i,400i,500i,700i,900i"
+                }
+            ]
+        },
+        "body": {
+            "id": "[BLOCK_ID]",
+            "type": "body",
+            "config": {
+                "background-color": "#efefef",
+                "width": "600px"
+            },
+            "content": [
+                {
+                    "id": "[BLOCK_ID]",
+                    "type": "section",
+                    "config": {
+                        "background-color": "#0ea5e9",
+                        "padding": "20px 0 20px 0",
+                        "column-stack": "no-stack"
+                    },
+                    "content": [
+                        {
+                            "id": "[BLOCK_ID]",
+                            "type": "column",
+                            "config": {
+                                "width": "100%",
+                                "padding": "0",
+                                "inner-padding": "0"
+                            },
+                            "content": [
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "image",
+                                    "config": {
+                                        "src": "https://vkcpacga.com/cdn/users/2x/t/nk/domain/01HV9CFN9GF2JAGMZ1CDDCHM0G.png",
+                                        "align": "center",
+                                        "width": "100px",
+                                        "padding": "0 0 16px 0",
+                                        "alt": "VK Accounting Logo"
+                                    }
+                                },
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "text",
+                                    "config": {
+                                        "align": "center",
+                                        "padding": "0 20px 0 20px",
+                                        "font-size": "28px",
+                                        "font-weight": "700",
+                                        "color": "#ffffff",
+                                        "font-family": "'Roboto', sans-serif"
+                                    },
+                                    "content": "Exclusive Offer: <br />Free Financial Consultation"
+                                },
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "text",
+                                    "config": {
+                                        "align": "center",
+                                        "padding": "10px 32px 0 32px",
+                                        "font-size": "18px",
+                                        "font-weight": "400",
+                                        "color": "#e0f2fe",
+                                        "font-family": "'Roboto', sans-serif"
+                                    },
+                                    "content": "Unlock peace of mind for your finances. Book your <strong>FREE</strong> session with our experts—tailored to your business or personal needs."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "[BLOCK_ID]",
+                    "type": "section",
+                    "config": {
+                        "background-color": "#ffffff",
+                        "padding": "24px 0 24px 0",
+                        "column-stack": "no-stack"
+                    },
+                    "content": [
+                        {
+                            "id": "[BLOCK_ID]",
+                            "type": "column",
+                            "config": {
+                                "width": "100%",
+                                "padding": "0",
+                                "inner-padding": "0"
+                            },
+                            "content": [
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "text",
+                                    "config": {
+                                        "align": "left",
+                                        "padding": "0 32px 10px 32px",
+                                        "font-size": "17px",
+                                        "font-weight": "400",
+                                        "color": "#475569"
+                                    },
+                                    "content": "<blockquote style=\"margin:0;padding-left:20px;border-left:2px solid #ccc\"><p>This is a quoted <span style=\"color: #23db88; background-color: #c25f5f\">messa<sup>ge</sup></span> or a <sub>blo</sub>ck of quoted text in an email.</p></blockquote><ul style=\"margin: 0 0 30px 0;padding: 0 0 0 20px;\"><li>One Two</li><li>One Two</li><li>One Two</li></ul>"
+                                },
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "divider",
+                                    "config": {
+                                        "border-width": "1px",
+                                        "border-style": "solid",
+                                        "border-color": "#0ea5e9",
+                                        "padding": "20px 32px 20px 32px"
+                                    }
+                                },
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "text",
+                                    "config": {
+                                        "align": "left",
+                                        "font-size": "15px",
+                                        "font-weight": "400",
+                                        "color": "#475569",
+                                        "padding": "0 32px 10px 32px",
+                                        "font-family": "'Roboto', sans-serif"
+                                    },
+                                    "content": "<ul style='padding-left:20px; margin:0;'><li>Personalized tax planning & financial strategies</li><li>Business bookkeeping & compliance review</li><li>Expert answers to your accounting questions</li></ul>"
+                                },
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "button",
+                                    "config": {
+                                        "align": "center",
+                                        "background-color": "#0ea5e9",
+                                        "color": "#ffffff",
+                                        "font-size": "17px",
+                                        "font-weight": "700",
+                                        "border-radius": "24px",
+                                        "inner-padding": "14px 32px 14px 32px",
+                                        "href": "https://vkcpacga.com/contact-us",
+                                        "padding": "18px 32px 0 32px"
+                                    },
+                                    "content": "Book Your Free Consultation"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "[BLOCK_ID]",
+                    "type": "section",
+                    "config": {
+                        "background-color": "#e0f2fe",
+                        "padding": "18px 0 18px 0",
+                        "column-stack": "no-stack"
+                    },
+                    "content": [
+                        {
+                            "id": "[BLOCK_ID]",
+                            "type": "column",
+                            "config": {
+                                "width": "100%",
+                                "padding": "0",
+                                "inner-padding": "0"
+                            },
+                            "content": [
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "text",
+                                    "config": {
+                                        "align": "center",
+                                        "font-size": "16px",
+                                        "font-weight": "400",
+                                        "color": "#0ea5e9",
+                                        "padding": "0 28px 0 28px",
+                                        "font-family": "'Roboto', sans-serif"
+                                    },
+                                    "content": "\"Numbers matter, people matter more.\""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "[BLOCK_ID]",
+                    "type": "section",
+                    "config": {
+                        "background-color": "#ffffff",
+                        "padding": "0",
+                        "column-stack": "no-stack"
+                    },
+                    "content": [
+                        {
+                            "id": "[BLOCK_ID]",
+                            "type": "column",
+                            "config": {
+                                "width": "100%",
+                                "padding": "0",
+                                "inner-padding": "0"
+                            },
+                            "content": [
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "text",
+                                    "config": {
+                                        "align": "left",
+                                        "padding": "18px 32px 0 32px",
+                                        "font-size": "15px",
+                                        "font-weight": "400",
+                                        "color": "#475569",
+                                        "font-family": "'Roboto', sans-serif"
+                                    },
+                                    "content": "Have questions before booking? Simply reply to this email or call us at <a href=\"tel:+14161231234\" style=\"color:#0ea5e9; text-decoration:none;\">+1 416-123-1234</a>."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "[BLOCK_ID]",
+                    "type": "section",
+                    "config": {
+                        "background-color": "#f8fafc",
+                        "padding": "32px 0 16px 0",
+                        "column-stack": "no-stack"
+                    },
+                    "content": [
+                        {
+                            "id": "[BLOCK_ID]",
+                            "type": "column",
+                            "config": {
+                                "width": "100%",
+                                "padding": "0",
+                                "inner-padding": "0"
+                            },
+                            "content": [
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "image",
+                                    "config": {
+                                        "src": "https://vkcpacga.com/cdn/users/2x/t/nk/domain/01HV9CFN9GF2JAGMZ1CDDCHM0G.png",
+                                        "align": "center",
+                                        "width": "64px",
+                                        "alt": "VK Accounting Logo",
+                                        "padding": "0 0 10px 0"
+                                    }
+                                },
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "text",
+                                    "config": {
+                                        "align": "center",
+                                        "color": "#475569",
+                                        "font-size": "14px",
+                                        "font-weight": "700",
+                                        "padding": "0 0 3px 0",
+                                        "font-family": "'Roboto', sans-serif"
+                                    },
+                                    "content": "[BUSINESS_NAME]"
+                                },
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "text",
+                                    "config": {
+                                        "align": "center",
+                                        "color": "#334155",
+                                        "font-size": "13px",
+                                        "font-weight": "400",
+                                        "padding": "0 0 12px 0",
+                                        "font-family": "'Roboto', sans-serif"
+                                    },
+                                    "content": "<a href=\"mailto:[BUSINESS_EMAIL]\" style=\"color:#0ea5e9; text-decoration:none;\">[BUSINESS_EMAIL]</a> &nbsp;|&nbsp; <a href=\"tel:[BUSINESS_PHONE]\" style=\"color:#0ea5e9; text-decoration:none;\">[BUSINESS_PHONE]</a>"
+                                },
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "text",
+                                    "config": {
+                                        "align": "center",
+                                        "color": "#64748b",
+                                        "font-size": "12px",
+                                        "font-weight": "400",
+                                        "padding": "0 0 12px 0",
+                                        "font-family": "'Roboto', sans-serif"
+                                    },
+                                    "content": "<a href=\"[BUSINESS_GOOGLE_MAP_LINK]\" style=\"color:#0ea5e9; text-decoration:none;\">[BUSINESS_ADDRESS]</a>"
+                                },
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "social",
+                                    "config": {
+                                        "align": "center",
+                                        "icon-size": "20px",
+                                        "mode": "horizontal",
+                                        "padding": "8px 0 8px 0"
+                                    },
+                                    "content": [
+                                        {
+                                            "id": "[BLOCK_ID]",
+                                            "type": "social-element",
+                                            "config": {
+                                                "href": "https://facebook.com",
+                                                "src": "icon-facebook.png"
+                                            }
+                                        },
+                                        {
+                                            "id": "[BLOCK_ID]",
+                                            "type": "social-element",
+                                            "config": {
+                                                "href": "https://linkedin.com",
+                                                "src": "icon-linkedin.png"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "text",
+                                    "config": {
+                                        "align": "center",
+                                        "color": "#64748b",
+                                        "font-size": "11px",
+                                        "font-weight": "400",
+                                        "padding": "10px 0 0 0",
+                                        "font-family": "'Roboto', sans-serif"
+                                    },
+                                    "content": "<a href=\"[UNSUBSCRIBE_LINK]\" style=\"color:#64748b;\">Unsubscribe</a> &nbsp;|&nbsp; <a href=\"https://vkcpacga.com//privacy-policy\" style=\"color:#64748b;\">Privacy</a> &nbsp;|&nbsp; <a href=\"https://vkcpacga.com//terms-of-use\" style=\"color:#64748b;\">Terms</a>"
+                                },
+                                {
+                                    "id": "[BLOCK_ID]",
+                                    "type": "text",
+                                    "config": {
+                                        "align": "center",
+                                        "color": "#cbd5e1",
+                                        "font-size": "10px",
+                                        "font-weight": "400",
+                                        "padding": "8px 0 0 0",
+                                        "font-family": "'Roboto', sans-serif"
+                                    },
+                                    "content": "© [BUSINESS_NAME] 2024. All rights reserved."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

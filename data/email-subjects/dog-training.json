@@ -1,0 +1,277 @@
+{
+    "industry": {
+        "slug": "dog-training",
+        "label": "Dog Training"
+    },
+    "subjects": {
+        "welcome-emails": {
+            "category": {
+                "label": "Welcome Emails",
+                "slug": "welcome-emails"
+            },
+            "items": {
+                "welcome-to-our-dog-training-family": "Welcome to Our Dog Training Family!",
+                "get-started-with-expert-dog-training-tips": "Get Started with Expert Dog Training Tips",
+                "your-journey-to-a-well-trained-dog-begins-here": "Your Journey to a Well-Trained Dog Begins Here",
+                "exclusive-welcome-offer-for-new-members": "Exclusive Welcome Offer for New Members",
+                "first-steps-to-training-your-dog-like-a-pro": "First Steps to Training Your Dog Like a Pro",
+                "unlock-the-secrets-to-a-happy-obedient-dog": "Unlock the Secrets to a Happy, Obedient Dog",
+                "join-our-community-of-successful-dog-owners": "Join Our Community of Successful Dog Owners",
+                "your-free-dog-training-guide-awaits": "Your Free Dog Training Guide Awaits!",
+                "lets-make-training-fun-for-you-and-your-dog": "Let’s Make Training Fun for You and Your Dog",
+                "start-training-with-confidence-today": "Start Training with Confidence Today",
+                "first-steps-to-a-happier-better-behaved-dog": "First Steps to a Happier, Better-Behaved Dog",
+                "unlock-the-secrets-to-successful-dog-training": "Unlock the Secrets to Successful Dog Training",
+                "welcome-lets-train-your-dog-together": "Welcome! Let’s Train Your Dog Together",
+                "start-training-your-dog-like-a-pro-today": "Start Training Your Dog Like a Pro Today",
+                "your-dogs-training-adventure-starts-now": "Your Dog’s Training Adventure Starts Now",
+                "join-us-in-transforming-your-dogs-behavior": "Join Us in Transforming Your Dog’s Behavior",
+                "welcome-to-a-world-of-well-trained-dogs": "Welcome to a World of Well-Trained Dogs"
+            }
+        },
+        "newsletter": {
+            "category": {
+                "label": "Newsletter",
+                "slug": "newsletter"
+            },
+            "items": {
+                "this-months-top-dog-training-tips": "This Month’s Top Dog Training Tips",
+                "new-training-techniques-you-need-to-try": "New Training Techniques You Need to Try",
+                "success-stories-from-our-dog-training-community": "Success Stories from Our Dog Training Community",
+                "upcoming-events-for-dog-lovers": "Upcoming Events for Dog Lovers",
+                "expert-advice-for-common-dog-behavior-issues": "Expert Advice for Common Dog Behavior Issues",
+                "the-latest-in-dog-training-research": "The Latest in Dog Training Research",
+                "seasonal-training-tips-for-your-dog": "Seasonal Training Tips for Your Dog",
+                "how-to-keep-your-dog-engaged-and-learning": "How to Keep Your Dog Engaged and Learning",
+                "your-monthly-dose-of-dog-training-wisdom": "Your Monthly Dose of Dog Training Wisdom",
+                "exclusive-content-just-for-our-subscribers": "Exclusive Content Just for Our Subscribers"
+            }
+        },
+        "promotional": {
+            "category": {
+                "label": "Promotional",
+                "slug": "promotional"
+            },
+            "items": {
+                "limited-time-offer-save-on-dog-training-courses": "Limited Time Offer: Save on Dog Training Courses",
+                "unlock-premium-training-content-today": "Unlock Premium Training Content Today",
+                "special-discount-for-our-loyal-customers": "Special Discount for Our Loyal Customers",
+                "enroll-now-and-train-your-dog-like-a-pro": "Enroll Now and Train Your Dog Like a Pro",
+                "dont-miss-out-on-our-biggest-sale-of-the-year": "Don’t Miss Out on Our Biggest Sale of the Year",
+                "upgrade-your-training-with-our-advanced-program": "Upgrade Your Training with Our Advanced Program",
+                "exclusive-deal-get-personalized-training-advice": "Exclusive Deal: Get Personalized Training Advice",
+                "transform-your-dogs-behavior-with-our-expert-help": "Transform Your Dog’s Behavior with Our Expert Help",
+                "join-our-elite-training-program-now": "Join Our Elite Training Program Now",
+                "last-chance-to-save-on-essential-training-tools": "Last Chance to Save on Essential Training Tools"
+            }
+        },
+        "educational": {
+            "category": {
+                "label": "Educational",
+                "slug": "educational"
+            },
+            "items": {
+                "the-science-behind-effective-dog-training": "The Science Behind Effective Dog Training",
+                "how-to-correct-common-dog-behavior-problems": "How to Correct Common Dog Behavior Problems",
+                "training-tips-for-first-time-dog-owners": "Training Tips for First-Time Dog Owners",
+                "understanding-your-dogs-body-language": "Understanding Your Dog’s Body Language",
+                "the-dos-and-donts-of-dog-training": "The Do’s and Don’ts of Dog Training",
+                "how-to-socialize-your-dog-properly": "How to Socialize Your Dog Properly",
+                "the-importance-of-consistency-in-dog-training": "The Importance of Consistency in Dog Training",
+                "advanced-commands-every-dog-should-know": "Advanced Commands Every Dog Should Know",
+                "how-to-train-your-dog-for-off-leash-reliability": "How to Train Your Dog for Off-Leash Reliability",
+                "building-a-strong-bond-through-training": "Building a Strong Bond Through Training"
+            }
+        },
+        "re-engagement": {
+            "category": {
+                "label": "Re-engagement",
+                "slug": "re-engagement"
+            },
+            "items": {
+                "we-miss-you-come-back-to-training": "We Miss You! Come Back to Training",
+                "your-dogs-training-journey-isnt-over-yet": "Your Dog’s Training Journey Isn’t Over Yet",
+                "exclusive-content-just-for-you": "Exclusive Content Just for You",
+                "lets-get-back-to-training-together": "Let’s Get Back to Training Together",
+                "dont-let-your-training-efforts-go-to-waste": "Don’t Let Your Training Efforts Go to Waste",
+                "reignite-your-dogs-learning-spark": "Reignite Your Dog’s Learning Spark",
+                "weve-got-new-tips-just-for-you": "We’ve Got New Tips Just for You",
+                "your-dog-deserves-the-best-training": "Your Dog Deserves the Best Training",
+                "come-back-and-save-on-your-next-course": "Come Back and Save on Your Next Course",
+                "lets-finish-what-you-started": "Let’s Finish What You Started"
+            }
+        },
+        "event-invitations": {
+            "category": {
+                "label": "Event Invitations",
+                "slug": "event-invitations"
+            },
+            "items": {
+                "join-us-for-a-free-dog-training-workshop": "Join Us for a Free Dog Training Workshop",
+                "youre-invited-to-our-next-training-seminar": "You’re Invited to Our Next Training Seminar",
+                "meet-the-experts-at-our-upcoming-event": "Meet the Experts at Our Upcoming Event",
+                "dont-miss-our-live-training-demonstration": "Don’t Miss Our Live Training Demonstration",
+                "special-event-training-for-agility-competitions": "Special Event: Training for Agility Competitions",
+                "learn-from-the-best-at-our-annual-conference": "Learn from the Best at Our Annual Conference",
+                "bring-your-dog-to-our-community-training-day": "Bring Your Dog to Our Community Training Day",
+                "exclusive-invite-advanced-training-techniques": "Exclusive Invite: Advanced Training Techniques",
+                "fun-and-learning-at-our-dog-training-camp": "Fun and Learning at Our Dog Training Camp",
+                "reserve-your-spot-at-our-next-training-session": "Reserve Your Spot at Our Next Training Session",
+                "join-us-for-our-free-dog-training-workshop": "Join Us for Our Free Dog Training Workshop",
+                "youre-invited-annual-dog-training-seminar": "You’re Invited: Annual Dog Training Seminar",
+                "puppy-training-class-starting-soon-reserve-your-spot": "Puppy Training Class Starting Soon – Reserve Your Spot",
+                "special-event-meet-the-trainers-day": "Special Event: Meet the Trainers Day",
+                "dont-miss-our-advanced-obedience-training-demo": "Don’t Miss Our Advanced Obedience Training Demo",
+                "invitation-dog-training-open-house-this-weekend": "Invitation: Dog Training Open House This Weekend",
+                "sign-up-now-for-our-agility-training-clinic": "Sign Up Now for Our Agility Training Clinic",
+                "exclusive-event-training-tips-from-the-pros": "Exclusive Event: Training Tips from the Pros",
+                "join-our-community-dog-training-day": "Join Our Community Dog Training Day",
+                "save-the-date-annual-dog-training-conference": "Save the Date: Annual Dog Training Conference"
+            }
+        },
+        "testimonials-and-success-stories": {
+            "category": {
+                "label": "Testimonials and Success Stories",
+                "slug": "testimonials-and-success-stories"
+            },
+            "items": {
+                "how-max-went-from-wild-to-well-behaved": "How Max Went from Wild to Well-Behaved",
+                "success-story-bellas-transformation": "Success Story: Bella’s Transformation",
+                "real-results-from-real-dog-owners": "Real Results from Real Dog Owners",
+                "see-what-our-community-is-saying": "See What Our Community Is Saying",
+                "from-problem-pup-to-perfect-companion": "From Problem Pup to Perfect Companion",
+                "how-our-training-changed-these-dogs-lives": "How Our Training Changed These Dogs’ Lives",
+                "inspiring-stories-from-our-training-program": "Inspiring Stories from Our Training Program",
+                "meet-the-dogs-who-mastered-their-training": "Meet the Dogs Who Mastered Their Training",
+                "before-and-after-amazing-training-results": "Before and After: Amazing Training Results",
+                "hear-from-owners-who-achieved-their-goals": "Hear from Owners Who Achieved Their Goals"
+            }
+        },
+        "marketing": {
+            "category": {
+                "label": "Marketing",
+                "slug": "marketing"
+            },
+            "items": {
+                "why-our-training-method-stands-out": "Why Our Training Method Stands Out",
+                "the-benefits-of-professional-dog-training": "The Benefits of Professional Dog Training",
+                "how-our-program-can-solve-your-dogs-issues": "How Our Program Can Solve Your Dog’s Issues",
+                "what-makes-our-training-different": "What Makes Our Training Different?",
+                "the-perfect-training-solution-for-your-dog": "The Perfect Training Solution for Your Dog",
+                "join-thousands-of-satisfied-dog-owners": "Join Thousands of Satisfied Dog Owners",
+                "invest-in-your-dogs-future-with-our-training": "Invest in Your Dog’s Future with Our Training",
+                "why-wait-start-training-your-dog-today": "Why Wait? Start Training Your Dog Today",
+                "the-easiest-way-to-train-your-dog": "The Easiest Way to Train Your Dog",
+                "get-results-faster-with-our-expert-guidance": "Get Results Faster with Our Expert Guidance"
+            }
+        },
+        "training-tips": {
+            "category": {
+                "label": "Training Tips",
+                "slug": "training-tips"
+            },
+            "items": {
+                "5-essential-commands-every-dog-should-know": "5 Essential Commands Every Dog Should Know",
+                "how-to-stop-your-dog-from-barking-excessively": "How to Stop Your Dog from Barking Excessively",
+                "the-secret-to-teaching-your-dog-to-stay": "The Secret to Teaching Your Dog to Stay",
+                "mastering-leash-training-tips-and-tricks": "Mastering Leash Training: Tips and Tricks",
+                "positive-reinforcement-the-key-to-dog-training": "Positive Reinforcement: The Key to Dog Training",
+                "how-to-socialize-your-dog-effectively": "How to Socialize Your Dog Effectively",
+                "training-your-dog-to-come-when-called": "Training Your Dog to Come When Called",
+                "avoid-these-common-dog-training-mistakes": "Avoid These Common Dog Training Mistakes",
+                "the-best-way-to-train-your-dog-to-sit": "The Best Way to Train Your Dog to Sit",
+                "house-training-your-puppy-a-step-by-step-guide": "House Training Your Puppy: A Step-by-Step Guide"
+            }
+        },
+        "promotions-and-offers": {
+            "category": {
+                "label": "Promotions and Offers",
+                "slug": "promotions-and-offers"
+            },
+            "items": {
+                "exclusive-offer-20-off-dog-training-sessions": "Exclusive Offer: 20% Off Dog Training Sessions",
+                "limited-time-sign-up-for-a-free-training-class": "Limited Time: Sign Up for a Free Training Class",
+                "special-discount-on-our-advanced-training-program": "Special Discount on Our Advanced Training Program",
+                "get-a-free-consultation-with-our-dog-training-experts": "Get a Free Consultation with Our Dog Training Experts",
+                "join-our-membership-program-for-exclusive-benefits": "Join Our Membership Program for Exclusive Benefits",
+                "holiday-special-save-on-dog-training-packages": "Holiday Special: Save on Dog Training Packages",
+                "new-client-offer-first-session-half-price": "New Client Offer: First Session Half Price",
+                "refer-a-friend-and-get-a-free-training-session": "Refer a Friend and Get a Free Training Session",
+                "seasonal-sale-upgrade-your-dogs-training-today": "Seasonal Sale: Upgrade Your Dog’s Training Today",
+                "dont-miss-out-on-our-summer-training-camp": "Don’t Miss Out on Our Summer Training Camp"
+            }
+        },
+        "success-stories": {
+            "category": {
+                "label": "Success Stories",
+                "slug": "success-stories"
+            },
+            "items": {
+                "from-naughty-to-nice-bellas-training-success": "From Naughty to Nice: Bella’s Training Success",
+                "how-max-learned-to-stop-jumping-on-guests": "How Max Learned to Stop Jumping on Guests",
+                "success-story-lunas-journey-to-obedience": "Success Story: Luna’s Journey to Obedience",
+                "meet-charlie-from-shy-to-social-in-4-weeks": "Meet Charlie: From Shy to Social in 4 Weeks",
+                "how-our-training-transformed-rockys-behavior": "How Our Training Transformed Rocky’s Behavior",
+                "daisys-story-overcoming-separation-anxiety": "Daisy’s Story: Overcoming Separation Anxiety",
+                "from-pulling-to-perfect-buddys-leash-training-win": "From Pulling to Perfect: Buddy’s Leash Training Win",
+                "how-we-helped-milo-stop-chewing-everything": "How We Helped Milo Stop Chewing Everything",
+                "success-spotlight-rubys-recall-revolution": "Success Spotlight: Ruby’s Recall Revolution",
+                "training-triumph-coopers-sit-stay-mastery": "Training Triumph: Cooper’s Sit-Stay Mastery"
+            }
+        },
+        "newsletters": {
+            "category": {
+                "label": "Newsletters",
+                "slug": "newsletters"
+            },
+            "items": {
+                "this-month-in-dog-training-tips-and-updates": "This Month in Dog Training: Tips and Updates",
+                "your-monthly-dose-of-dog-training-wisdom": "Your Monthly Dose of Dog Training Wisdom",
+                "latest-trends-in-dog-training-you-should-know": "Latest Trends in Dog Training You Should Know",
+                "dog-training-news-whats-new-this-month": "Dog Training News: What’s New This Month",
+                "expert-insights-this-months-training-focus": "Expert Insights: This Month’s Training Focus",
+                "monthly-roundup-training-tips-and-success-stories": "Monthly Roundup: Training Tips and Success Stories",
+                "stay-informed-dog-training-newsletter": "Stay Informed: Dog Training Newsletter",
+                "this-months-must-read-dog-training-articles": "This Month’s Must-Read Dog Training Articles",
+                "newsletter-training-techniques-and-more": "Newsletter: Training Techniques and More",
+                "your-go-to-guide-for-dog-training-updates": "Your Go-To Guide for Dog Training Updates"
+            }
+        },
+        "follow-ups": {
+            "category": {
+                "label": "Follow-Ups",
+                "slug": "follow-ups"
+            },
+            "items": {
+                "hows-your-dogs-training-going-wed-love-to-hear": "How’s Your Dog’s Training Going? We’d Love to Hear!",
+                "follow-up-tips-to-keep-your-dogs-training-on-track": "Follow-Up: Tips to Keep Your Dog’s Training on Track",
+                "checking-in-need-any-dog-training-help": "Checking In: Need Any Dog Training Help?",
+                "how-can-we-support-your-dogs-training-journey": "How Can We Support Your Dog’s Training Journey?",
+                "follow-up-your-feedback-matters-to-us": "Follow-Up: Your Feedback Matters to Us",
+                "lets-keep-the-momentum-going-in-your-dogs-training": "Let’s Keep the Momentum Going in Your Dog’s Training",
+                "hows-your-dog-doing-after-our-last-session": "How’s Your Dog Doing After Our Last Session?",
+                "follow-up-additional-resources-for-your-dogs-training": "Follow-Up: Additional Resources for Your Dog’s Training",
+                "were-here-to-help-with-any-training-challenges": "We’re Here to Help with Any Training Challenges",
+                "follow-up-celebrate-your-dogs-progress-with-us": "Follow-Up: Celebrate Your Dog’s Progress with Us"
+            }
+        },
+        "seasonal-tips": {
+            "category": {
+                "label": "Seasonal Tips",
+                "slug": "seasonal-tips"
+            },
+            "items": {
+                "summer-safety-training-tips-for-hot-weather": "Summer Safety: Training Tips for Hot Weather",
+                "holiday-training-keeping-your-dog-calm-amid-chaos": "Holiday Training: Keeping Your Dog Calm Amid Chaos",
+                "winter-woes-training-your-dog-in-cold-weather": "Winter Woes: Training Your Dog in Cold Weather",
+                "spring-cleaning-training-tips-for-a-fresh-start": "Spring Cleaning: Training Tips for a Fresh Start",
+                "fall-into-good-habits-seasonal-training-advice": "Fall into Good Habits: Seasonal Training Advice",
+                "halloween-safety-training-your-dog-for-tricks-not-trouble": "Halloween Safety: Training Your Dog for Tricks, Not Trouble",
+                "thanksgiving-tips-keeping-your-dog-well-behaved": "Thanksgiving Tips: Keeping Your Dog Well-Behaved",
+                "christmas-training-ensuring-a-peaceful-holiday": "Christmas Training: Ensuring a Peaceful Holiday",
+                "new-year-new-training-goals-for-your-dog": "New Year, New Training Goals for Your Dog",
+                "seasonal-training-adapting-to-weather-changes": "Seasonal Training: Adapting to Weather Changes"
+            }
+        }
+    }
+}
