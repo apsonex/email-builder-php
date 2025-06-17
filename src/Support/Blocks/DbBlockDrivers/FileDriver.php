@@ -43,30 +43,11 @@ class FileDriver extends BaseDriver
         $tenantId = $filters[$this->tenantKey] ?? null;
         $ownerId = $filters[$this->ownerKey] ?? null;
 
-        if ($this->multitenancyEnabled) {
-            if ($ownerId && $tenantId) {
-                // scan only that tenant/owner directory
-                $dir = $this->getDirPath($ownerId, $tenantId);
-                if (!is_dir($dir)) return [];
-                $files = glob($dir . '/*.json');
-            } elseif ($tenantId) {
-                // scan all owners under tenant directory
-                $tenantDir = "{$this->storagePath}/tenant_{$tenantId}";
-                if (!is_dir($tenantDir)) return [];
-                $files = glob($tenantDir . '/owner_*/' . '*.json');
-            } else {
-                // scan all tenants > all owners > all files
-                $files = glob($this->storagePath . '/tenant_*/owner_*/' . '*.json');
-            }
-        } else {
-            if ($ownerId) {
-                $dir = $this->getDirPath($ownerId);
-                if (!is_dir($dir)) return [];
-                $files = glob($dir . '/*.json');
-            } else {
-                $files = glob($this->storagePath . '/owner_*/' . '*.json');
-            }
-        }
+        $pattern = $this->multitenancyEnabled
+            ? ($ownerId ? "/tenant_{$tenantId}/owner_{$ownerId}/*.json" : '/tenant_*/owner_*/' . '*.json')
+            : ($ownerId ? "/owner_{$ownerId}/*.json" : '/owner_*/' . '*.json');
+
+        $files = glob($this->storagePath . $pattern);
 
         foreach ($files as $file) {
             $content = json_decode(file_get_contents($file), true);
@@ -105,12 +86,10 @@ class FileDriver extends BaseDriver
         }
 
         $filePath = $this->getFilePath($ownerId, $id, $tenantId);
-
         if (!file_exists($filePath)) return null;
 
         $content = json_decode(file_get_contents($filePath), true);
 
-        // Validate tenant and owner match
         if ($this->multitenancyEnabled && ($content[$this->tenantKey] ?? null) != $tenantId) {
             return null;
         }
@@ -123,33 +102,27 @@ class FileDriver extends BaseDriver
 
     public function store(array $input): array|bool
     {
-        $data = $input['data'] ?? [];
+        $id = Str::uuid()->toString();
+        $name = $input['name'] ?? null;
+        $category = $input['category'] ?? 'uncategorized';
+        $ownerId = $input[$this->ownerKey] ?? null;
+        $tenantId = $input[$this->tenantKey] ?? null;
+        $config = $input['config'] ?? [];
 
-        $ownerId = $input[$this->ownerKey] ?? $data[$this->ownerKey] ?? null;
-        if (!$ownerId) {
+        if (!$name || !$ownerId || ($this->multitenancyEnabled && !$tenantId)) {
             return false;
-        }
-
-        $id = $data['id'] ?? Str::uuid()->toString();
-
-        $tenantId = null;
-        if ($this->multitenancyEnabled) {
-            $tenantId = $input[$this->tenantKey] ?? $data[$this->tenantKey] ?? null;
-            if (!$tenantId) {
-                return false;
-            }
-        }
-
-        $dir = $this->getDirPath($ownerId, $tenantId);
-        if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
         }
 
         $block = [
             'id' => $id,
-            'name' => $data['name'] ?? '',
-            'category' => $data['category'] ?? '',
-            'html' => $data['html'] ?? '',
+            'uuid' => $id,
+            'name' => $name,
+            'slug' => $input['slug'] ?? '',
+            'description' => $input['description'] ?? '',
+            'preview' => $input['preview'] ?? '',
+            'type' => $input['type'] ?? 'block',
+            'category' => $category,
+            'config' => $config,
             $this->ownerKey => $ownerId,
         ];
 
@@ -157,51 +130,32 @@ class FileDriver extends BaseDriver
             $block[$this->tenantKey] = $tenantId;
         }
 
-        $block['data'] = $data;
-
+        // Determine file path
         $filePath = $this->getFilePath($ownerId, $id, $tenantId);
 
+        // Ensure directory exists
+        @mkdir(dirname($filePath), 0777, true);
+
+        // Save block to JSON file
         $saved = file_put_contents($filePath, json_encode($block, JSON_PRETTY_PRINT));
 
-        if ($saved === false) {
-            return false;
-        }
-
-        return $block;
+        return $saved !== false ? $block : false;
     }
 
     public function update(array $whereClause, array $input): bool
     {
-        $id = $whereClause['id'] ?? null;
-        $ownerId = $whereClause[$this->ownerKey] ?? null;
-        $tenantId = $whereClause[$this->tenantKey] ?? null;
+        $existing = $this->show($whereClause);
+        if (!$existing) return false;
 
-        if (!$id || !$ownerId || ($this->multitenancyEnabled && !$tenantId)) {
-            return false;
-        }
+        $existing['name'] = $input['name'] ?? $existing['name'];
+        $existing['slug'] = $input['slug'] ?? $existing['slug'];
+        $existing['description'] = $input['description'] ?? $existing['description'];
+        $existing['preview'] = $input['preview'] ?? $existing['preview'];
+        $existing['type'] = $input['type'] ?? $existing['type'];
+        $existing['category'] = $input['category'] ?? $existing['category'];
+        $existing['config'] = array_key_exists('config', $input) ? $input['config'] : $existing['config'];
 
-        $filePath = $this->getFilePath($ownerId, $id, $tenantId);
-        if (!file_exists($filePath)) {
-            return false;
-        }
-
-        $existing = json_decode(file_get_contents($filePath), true);
-        if (!$existing) {
-            return false;
-        }
-
-        $data = array_merge($existing['data'] ?? [], $input['data'] ?? []);
-
-        $existing['name'] = $data['name'] ?? $existing['name'];
-        $existing['category'] = $data['category'] ?? $existing['category'];
-        $existing['html'] = $data['html'] ?? $existing['html'];
-        $existing['data'] = $data;
-
-        $existing[$this->ownerKey] = $ownerId;
-
-        if ($this->multitenancyEnabled) {
-            $existing[$this->tenantKey] = $tenantId;
-        }
+        $filePath = $this->getFilePath($existing[$this->ownerKey], $existing['id'], $this->multitenancyEnabled ? $existing[$this->tenantKey] : null);
 
         $saved = file_put_contents($filePath, json_encode($existing, JSON_PRETTY_PRINT));
 
@@ -210,20 +164,11 @@ class FileDriver extends BaseDriver
 
     public function destroy(array $whereClause): bool
     {
-        $id = $whereClause['id'] ?? null;
-        $ownerId = $whereClause[$this->ownerKey] ?? null;
-        $tenantId = $whereClause[$this->tenantKey] ?? null;
+        $existing = $this->show($whereClause);
+        if (!$existing) return false;
 
-        if (!$id || !$ownerId || ($this->multitenancyEnabled && !$tenantId)) {
-            return false;
-        }
+        $filePath = $this->getFilePath($existing[$this->ownerKey], $existing['id'], $this->multitenancyEnabled ? $existing[$this->tenantKey] : null);
 
-        $filePath = $this->getFilePath($ownerId, $id, $tenantId);
-
-        if (file_exists($filePath)) {
-            return unlink($filePath);
-        }
-
-        return false;
+        return file_exists($filePath) ? unlink($filePath) : false;
     }
 }

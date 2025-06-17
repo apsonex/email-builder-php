@@ -4,9 +4,9 @@ namespace Apsonex\EmailBuilderPhp\Support\EmailConfigs;
 
 use Apsonex\EmailBuilderPhp\Concerns\Makebale;
 use Apsonex\EmailBuilderPhp\Contracts\HttpQueryDriverContract;
-use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers\EmailBuilderDevDriver;
+use Apsonex\EmailBuilderPhp\Support\Blocks\BlockDrivers\EmailBuilderDevDriver;
 
-class EmailConfig
+class Block
 {
     use Makebale;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Apsonex\EmailBuilderPhp\Support\Blocks\AiBlockDrivers;
+namespace Apsonex\EmailBuilderPhp\Support\Blocks\BlockDrivers;
 
 use Apsonex\EmailBuilderPhp\Concerns\Fakeable;
 use Apsonex\EmailBuilderPhp\Concerns\Makebale;

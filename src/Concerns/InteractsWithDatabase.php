@@ -10,7 +10,7 @@ trait InteractsWithDatabase
 
     protected string $ownerKey = 'owner_id';
 
-    protected string $table;
+    protected ?string $table = null;
 
     public function tableName(string $tableName): static
     {

@@ -2,7 +2,7 @@
 
 use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfig;
 
-describe('ai_email_config_test', function () {
+describe('email_config_test', function () {
 
     it('it_download_fake_response_from_email_builder_dev', function () {
 

@@ -2,6 +2,7 @@
 
 namespace Apsonex\EmailBuilderPhp\Support\Blocks;
 
+use Apsonex\EmailBuilderPhp\Concerns\HasTableName;
 use Apsonex\EmailBuilderPhp\Concerns\Makebale;
 use Apsonex\EmailBuilderPhp\Contracts\DbBlockDriverContract;
 use Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers\{FileDriver};
@@ -15,7 +16,7 @@ use Apsonex\EmailBuilderPhp\Support\Blocks\DbBlockDrivers\{FileDriver};
  */
 class DbBlock
 {
-    use Makebale;
+    use Makebale, HasTableName;
 
     public static $defaultDriver = FileDriver::class;
 
@@ -29,7 +30,7 @@ class DbBlock
 
     public static string $ownerKeyName = 'owner_id';
 
-    protected array $preperationData = [];
+    protected array $preparationData = [];
 
     public function driver(string $driver): static
     {
@@ -58,9 +59,13 @@ class DbBlock
         return self::$multitenancyEnabled;
     }
 
-    public function preperation($preperationData): static
+    public function preparation(array $preparationData): static
     {
-        $this->preperationData = $preperationData;
+        $this->preparationData = $preparationData;
+
+        if (!$this->table) {
+            $this->tableName($preparationData['tableName'] ?? 'custom_blocks');
+        }
         return $this;
     }
 
@@ -70,7 +75,7 @@ class DbBlock
             'multitenancyEnabled' => static::$multitenancyEnabled,
             'tenantKeyName' => static::$tenantKeyName,
             'ownerKeyName' => static::$ownerKeyName,
-            ...(is_array($this->preperationData) ? $this->preperationData : []),
+            ...(is_array($this->preparationData) ? $this->preparationData : []),
         ];
     }
 
@@ -78,23 +83,21 @@ class DbBlock
     {
         $this->initilizeDriver();
 
-        return $this->driverInstance->tableName('custom_blocks')->prepare($this->getPreperationData())->{$method}(...$args);
+        return $this->driverInstance->tableName($this->table)->prepare($this->getPreperationData())->{$method}(...$args);
     }
 
     protected function initilizeDriver()
     {
         $driverClass = $this->driverInstance ? get_class($this->driverInstance) : null;
 
-        if ($driverClass && $driverClass !== $this->driver) {
-            $driver = $this->driver;
-            $this->driverInstance = (new $driver());
-            return;
-        }
+        $targetClass = $this->driver ?: static::$defaultDriver;
 
-        if (!$driverClass) {
-            $driver = ($this->driver ?: static::$defaultDriver);
-            $this->driverInstance = (new $driver());
-            return;
+        if (!$driverClass || $driverClass !== $targetClass) {
+            if (!class_exists($targetClass)) {
+                throw new \RuntimeException("Driver class [$targetClass] does not exist.");
+            }
+
+            $this->driverInstance = new $targetClass();
         }
     }
 }

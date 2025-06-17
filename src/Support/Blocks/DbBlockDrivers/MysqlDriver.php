@@ -15,9 +15,9 @@ class MysqlDriver extends BaseDriver
         if (empty($options['pdo']) || !($options['pdo'] instanceof PDO)) {
             throw new RuntimeException('PDO instance is required for MysqlCustomBlockDriver.');
         }
+
         $this->pdo = $options['pdo'];
 
-        // You can also override multitenancy & keys here if needed
         if (isset($options['multitenancyEnabled'])) {
             $this->multitenancyEnabled = (bool) $options['multitenancyEnabled'];
         }
@@ -28,7 +28,6 @@ class MysqlDriver extends BaseDriver
             $this->ownerKey = $options['ownerKeyName'];
         }
 
-        // Create table if not exists
         $this->createTableIfNotExists();
 
         return $this;
@@ -37,24 +36,28 @@ class MysqlDriver extends BaseDriver
     protected function createTableIfNotExists(): void
     {
         $columns = [
-            "id VARCHAR(36) PRIMARY KEY",
+            "id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+            "uuid VARCHAR(36) NOT NULL",
             "name VARCHAR(255) NOT NULL",
-            "owner_id VARCHAR(255) NULL",
+            "slug VARCHAR(255) NOT NULL",
+            "description TEXT NULL",
+            "preview TEXT NULL",
+            "{$this->ownerKey} BIGINT UNSIGNED NULL",
             "category VARCHAR(255) NULL",
-            "html TEXT NULL",
-            "data TEXT NOT NULL",
+            "config JSON NOT NULL",
             "created_at DATETIME DEFAULT CURRENT_TIMESTAMP",
             "updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
         ];
 
         if ($this->multitenancyEnabled) {
-            $columns[] = "{$this->tenantKey} VARCHAR(255) NULL";
+            $columns[] = "{$this->tenantKey} BIGINT UNSIGNED NULL";
         }
 
-        $sql = "CREATE TABLE IF NOT EXISTS {$this->table} (" . implode(',', $columns) . ")";
-
+        $sql = "CREATE TABLE IF NOT EXISTS {$this->table} (" . implode(", ", $columns) . ")";
         $this->pdo->exec($sql);
     }
+
+
 
 
     public function index(array $filters = []): array
@@ -77,21 +80,26 @@ class MysqlDriver extends BaseDriver
             $params[':keyword'] = '%' . $filters['keyword'] . '%';
         }
 
-        $sql = "SELECT * FROM custom_blocks";
-        if ($where) {
+        $sql = "SELECT * FROM {$this->table}";
+
+        if (!empty($where)) {
             $sql .= " WHERE " . implode(' AND ', $where);
         }
+
         $sql .= " ORDER BY created_at DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
 
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         return array_map(fn($row) => $this->rowToData($row), $rows);
     }
 
+
     public function store(array $data): array|bool
     {
+        // Required checks
         if (empty($data[$this->ownerKey])) {
             throw new RuntimeException("{$this->ownerKey} is required");
         }
@@ -100,33 +108,39 @@ class MysqlDriver extends BaseDriver
             throw new RuntimeException("{$this->tenantKey} is required");
         }
 
-        $id = $data['id'] ?? $this->generateUuid();
+        if (empty($data['name'])) {
+            throw new RuntimeException("name is required");
+        }
 
-        $name = $data['data']['name'] ?? null;
-        $category = $data['data']['category'] ?? null;
-        $html = $data['data']['html'] ?? null;
-        $jsonData = json_encode($data['data'] ?? []);
+        if (empty($data['slug'])) {
+            throw new RuntimeException("slug is required");
+        }
 
-        // Define columns and placeholders
-        $columns = ['id', 'owner_id', 'name', 'category', 'html', 'data'];
-        $placeholders = [':id', ':owner_id', ':name', ':category', ':html', ':data'];
+        $name = $data['name'];
+        $slug = $data['slug'];
+        $category = $data['category'] ?? 'uncategorized';
+        $description = $data['description'] ?? null;
+        $jsonConfig = json_encode($data['config'] ?? []);
+        $uuid = $this->generateUuid();
+
+        $columns = [$this->ownerKey, 'name', 'category', 'description', 'slug', 'config', 'uuid'];
+        $placeholders = [':owner_id', ':name', ':category', ':description', ':slug', ':config', ':uuid'];
         $bindings = [
-            ':id' => $id,
             ':owner_id' => $data[$this->ownerKey],
             ':name' => $name,
             ':category' => $category,
-            ':html' => $html,
-            ':data' => $jsonData,
+            ':description' => $description,
+            ':slug' => $slug,
+            ':config' => $jsonConfig,
+            ':uuid' => $uuid,
         ];
 
-        // Add tenant column if multitenancy is enabled
         if ($this->multitenancyEnabled) {
             $columns[] = $this->tenantKey;
             $placeholders[] = ':tenant_id';
             $bindings[':tenant_id'] = $data[$this->tenantKey];
         }
 
-        // Build and execute SQL
         $sql = sprintf(
             "INSERT INTO %s (%s) VALUES (%s)",
             $this->table,
@@ -135,41 +149,74 @@ class MysqlDriver extends BaseDriver
         );
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($bindings);
+        $success = $stmt->execute($bindings);
 
-        return array_merge($data['data'], [
-            'id' => $id,
+        if (!$success) {
+            return false;
+        }
+
+        // Get the auto-incremented id generated by the DB
+        $id = $this->pdo->lastInsertId();
+
+        // Return the stored data merged with id, ownerKey and tenantKey (if applicable)
+        return array_merge($data, [
+            'id' => (int)$id,
             $this->ownerKey => $data[$this->ownerKey],
             $this->tenantKey => $this->multitenancyEnabled ? $data[$this->tenantKey] : null,
+            'uuid' => $uuid,
         ]);
     }
 
 
     public function show(array $filters): ?array
     {
-        if (empty($filters['id'])) {
-            throw new RuntimeException("id is required");
-        }
-
         if (empty($filters[$this->ownerKey])) {
             throw new RuntimeException("{$this->ownerKey} is required");
+        }
+
+        if (empty($filters['id']) && empty($filters['uuid'])) {
+            throw new RuntimeException("Either id or uuid is required");
         }
 
         if ($this->multitenancyEnabled && empty($filters[$this->tenantKey])) {
             throw new RuntimeException("{$this->tenantKey} is required");
         }
 
-        // Build SQL
-        $sql = "SELECT * FROM {$this->table} WHERE id = :id AND {$this->ownerKey} = :owner_id";
+        $sql = "SELECT * FROM `{$this->table}` WHERE ";
 
         $params = [
-            ':id' => $filters['id'],
-            ':owner_id' => $filters[$this->ownerKey],
+            ':owner' => $filters[$this->ownerKey],
         ];
 
+        // Build WHERE condition for id and/or uuid
+        $idCondition = '';
+        if (!empty($filters['id'])) {
+            $idCondition = "`id` = :id";
+            $params[':id'] = $filters['id'];
+        }
+
+        $uuidCondition = '';
+        if (!empty($filters['uuid'])) {
+            $uuidCondition = "`uuid` = :uuid";
+            $params[':uuid'] = $filters['uuid'];
+        }
+
+        // Combine id and uuid with OR if both present
+        if ($idCondition && $uuidCondition) {
+            $sql .= "($idCondition OR $uuidCondition)";
+        } elseif ($idCondition) {
+            $sql .= $idCondition;
+        } else {
+            $sql .= $uuidCondition;
+        }
+
+        // Owner check
+        $sql .= " AND `{$this->ownerKey}` = :owner";
+
+        // Tenant check if enabled
         if ($this->multitenancyEnabled) {
-            $sql .= " AND {$this->tenantKey} = :tenant_id";
-            $params[':tenant_id'] = $filters[$this->tenantKey];
+            $sql .= " AND `{$this->tenantKey}` = :tenant";
+            $params[':tenant'] = $filters[$this->tenantKey];
         }
 
         $stmt = $this->pdo->prepare($sql);
@@ -195,27 +242,37 @@ class MysqlDriver extends BaseDriver
             throw new RuntimeException("{$this->tenantKey} is required");
         }
 
-        // Fetch the existing record
         $existing = $this->show($filters);
 
         if (!$existing) {
             return false;
         }
 
-        $name = $data['data']['name'] ?? $existing['name'] ?? null;
-        $category = $data['data']['category'] ?? $existing['category'] ?? null;
-        $html = $data['data']['html'] ?? $existing['html'] ?? null;
-        $jsonData = json_encode($data['data'] ?? $existing['data'] ?? []);
+        // Prepare updated fields, fallback to existing if not provided
+        $name = $data['name'] ?? $existing['name'];
+        $category = $data['category'] ?? $existing['category'];
+        $description = $data['description'] ?? $existing['description'];
 
-        $sql = "UPDATE {$this->table}
-            SET name = :name, category = :category, html = :html, data = :data
-            WHERE id = :id AND {$this->ownerKey} = :owner_id";
+        // Handle config: if present, encode as JSON, else keep existing
+        if (isset($data['config'])) {
+            $config = json_encode($data['config'], true);
+        } else {
+            $config = is_array($existing['config']) ? json_encode($existing['config'], true) : $existing['config'];
+        }
+
+        $sql = "UPDATE {$this->table} SET
+        name = :name,
+        category = :category,
+        description = :description,
+        config = :config,
+        updated_at = CURRENT_TIMESTAMP
+        WHERE id = :id AND {$this->ownerKey} = :owner_id";
 
         $params = [
             ':name' => $name,
             ':category' => $category,
-            ':html' => $html,
-            ':data' => $jsonData,
+            ':description' => $description,
+            ':config' => $config,
             ':id' => $filters['id'],
             ':owner_id' => $filters[$this->ownerKey],
         ];
@@ -226,15 +283,15 @@ class MysqlDriver extends BaseDriver
         }
 
         $stmt = $this->pdo->prepare($sql);
-
         return $stmt->execute($params);
     }
 
 
+
     public function destroy(array $filters): bool
     {
-        if (empty($filters['id'])) {
-            throw new RuntimeException("id is required");
+        if (empty($filters['id']) && empty($filters['uuid'])) {
+            throw new RuntimeException("Either id or uuid is required");
         }
 
         if (empty($filters[$this->ownerKey])) {
@@ -245,11 +302,8 @@ class MysqlDriver extends BaseDriver
             throw new RuntimeException("{$this->tenantKey} is required");
         }
 
-        $sql = "DELETE FROM {$this->table}
-            WHERE id = :id AND {$this->ownerKey} = :owner_id";
-
+        $sql = "DELETE FROM {$this->table} WHERE {$this->ownerKey} = :owner_id";
         $params = [
-            ':id' => $filters['id'],
             ':owner_id' => $filters[$this->ownerKey],
         ];
 
@@ -258,33 +312,38 @@ class MysqlDriver extends BaseDriver
             $params[':tenant_id'] = $filters[$this->tenantKey];
         }
 
-        $stmt = $this->pdo->prepare($sql);
+        if (!empty($filters['id'])) {
+            $sql .= " AND id = :id";
+            $params[':id'] = $filters['id'];
+        } elseif (!empty($filters['uuid'])) {
+            $sql .= " AND uuid = :uuid";
+            $params[':uuid'] = $filters['uuid'];
+        }
 
+        $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($params);
     }
 
 
     protected function rowToData(array $row): array
     {
-        $data = json_decode($row['data'] ?? '{}', true);
-
-        if (!is_array($data)) {
-            $data = [];
-        }
-
-        return array_merge($data, [
+        return [
             'id' => $row['id'] ?? null,
             $this->tenantKey => $row[$this->tenantKey] ?? null,
             $this->ownerKey => $row[$this->ownerKey] ?? null,
             'name' => $row['name'] ?? null,
             'category' => $row['category'] ?? null,
-            'html' => $row['html'] ?? null,
-        ]);
+            'description' => $row['description'] ?? null,
+            'slug' => $row['slug'] ?? null,
+            'config' => isset($row['config'])
+                ? (is_string($row['config']) ? json_decode($row['config'], true) : $row['config'])
+                : [],
+        ];
     }
 
 
     protected function generateUuid(): string
     {
-        return Str::uuid();
+        return (string) Str::uuid();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Apsonex\EmailBuilderPhp\Contracts;
 
-interface DbEmailConfigDriverConract
+interface DbEmailConfigDriverContract
 {
     public function tableName(string $tableName): static;
 

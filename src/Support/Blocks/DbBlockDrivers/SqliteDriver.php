@@ -32,17 +32,21 @@ class SqliteDriver extends BaseDriver
     protected function prepareTable(): void
     {
         $tenantColumn = $this->multitenancyEnabled
-            ? ", {$this->tenantKey} TEXT"
+            ? ", {$this->tenantKey} INTEGER"
             : "";
 
         $sql = <<<SQL
         CREATE TABLE IF NOT EXISTS {$this->table} (
-            id TEXT PRIMARY KEY,
-            name TEXT,
-            category TEXT,
-            html TEXT,
-            data TEXT,
-            {$this->ownerKey} TEXT
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            uuid TEXT, -- uuid
+            name TEXT, -- block name
+            slug TEXT, -- block unique slug
+            description TEXT, -- block description
+            preview TEXT, -- block preview image path
+            type TEXT, -- type: default to `block`
+            category TEXT, -- block category
+            config TEXT, -- array encoded as string
+            {$this->ownerKey} INTEGER
             {$tenantColumn}
         )
         SQL;
@@ -57,8 +61,19 @@ class SqliteDriver extends BaseDriver
         $query = "SELECT * FROM {$this->table} WHERE 1=1";
         $params = [];
 
+        if (!empty($filters['uuid'])) {
+            $query .= " AND uuid LIKE :uuid";
+            $params[':uuid'] = '%' . $filters['uuid'] . '%';
+        }
+
+        if (!empty($filters['name'])) {
+            $query .= " AND name LIKE :name";
+            $params[':name'] = '%' . $filters['name'] . '%';
+        }
+
         if (!empty($filters['keyword'])) {
-            $query .= " AND name LIKE :keyword";
+            // Assuming you want to search in name and description for keyword
+            $query .= " AND (name LIKE :keyword OR description LIKE :keyword)";
             $params[':keyword'] = '%' . $filters['keyword'] . '%';
         }
 
@@ -72,17 +87,24 @@ class SqliteDriver extends BaseDriver
             $params[':tenant'] = $filters[$this->tenantKey];
         }
 
+        if (!empty($filters[$this->ownerKey])) {
+            $query .= " AND {$this->ownerKey} = :owner";
+            $params[':owner'] = $filters[$this->ownerKey];
+        }
+
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($params);
 
         $results = [];
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $row['data'] = json_decode($row['data'], true);
+            // Decode config JSON string into 'config' key, not 'data' (your table has 'config' column)
+            $row['config'] = json_decode($row['config'], true);
             $results[] = $row;
         }
 
         return $results;
     }
+
 
     public function show(array $filters): ?array
     {
@@ -93,84 +115,129 @@ class SqliteDriver extends BaseDriver
 
         $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if (!$row) return null;
+        if (!$row) {
+            return null;
+        }
 
-        $row['data'] = json_decode($row['data'], true);
+        // Decode JSON config column
+        $row['config'] = json_decode($row['config'], true);
 
         return $row;
     }
 
+
     public function store(array $input): array|bool
     {
-        $id = Str::uuid()->toString();
-        $data = $input['data'] ?? [];
+        $uuid = Str::uuid()->toString();
+        $name = $input['name'] ?? null;
+        $category = $input['category'] ?? 'uncategorized';
+        $ownerId = (int)($input[$this->ownerKey] ?? 0);
+        $tenantId = (int)($input[$this->ownerKey] ?? 0);
+        $config = $input['config'] ?? [];
 
-        $columns = ['id', 'name', 'category', 'html', 'data', $this->ownerKey];
-        $placeholders = [':id', ':name', ':category', ':html', ':data', ':owner'];
+        if (!$name || ($ownerId <= 0) || ($this->multitenancyEnabled && $tenantId <= 0)) {
+            // Name is required, fail early
+            return false;
+        }
+
+        $columns = ['uuid', 'name', 'category', 'config', $this->ownerKey];
+        $placeholders = [':uuid', ':name', ':category', ':config', ':owner'];
 
         $values = [
-            ':id' => $id,
-            ':name' => $data['name'] ?? '',
-            ':category' => $data['category'] ?? '',
-            ':html' => $data['html'] ?? '',
-            ':data' => json_encode($data),
-            ':owner' => $input[$this->ownerKey] ?? null,
+            ':uuid' => $uuid,
+            ':name' => (string)$name,
+            ':category' => (string)$category,
+            ':config' => json_encode($config),
+            ':owner' => (int)$ownerId,
         ];
 
         if ($this->multitenancyEnabled) {
             $columns[] = $this->tenantKey;
             $placeholders[] = ':tenant';
-            $values[':tenant'] = $input[$this->tenantKey] ?? null;
+            $values[':tenant'] = $tenantId;
         }
 
         $sql = sprintf(
-            "INSERT INTO {$this->table} (%s) VALUES (%s)",
+            "INSERT INTO %s (%s) VALUES (%s)",
+            $this->table,
             implode(', ', $columns),
             implode(', ', $placeholders)
         );
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($values);
+        $success = $stmt->execute($values);
 
-        return array_merge(['id' => $id], $data);
+        if (!$success) {
+            return false;
+        }
+
+        // Fetch the last inserted ID if using AUTOINCREMENT id
+        $lastId = $this->pdo->lastInsertId();
+
+        // Return a consistent array with stored data (including id and decoded config)
+        return [
+            'id' => (int)$lastId,
+            'uuid' => $uuid,
+            'name' => $name,
+            'category' => $category,
+            'config' => $config,
+            $this->ownerKey => $input[$this->ownerKey] ?? null,
+            $this->tenantKey => $this->multitenancyEnabled ? ($input[$this->tenantKey] ?? null) : null,
+        ];
     }
 
     public function update(array $whereClause, array $input): bool
     {
         $existing = $this->show($whereClause);
 
-        if (!$existing) return false;
+        if (!$existing) {
+            return false;
+        }
 
-        $data = array_merge($existing['data'], $input['data'] ?? []);
+        // Determine config value: overwrite only if present in input
+        $config = array_key_exists('config', $input)
+            ? json_encode($input['config'])
+            : $existing['config'];
 
+        // Updateable fields (never update id, owner, or tenant keys)
         $fields = [
             'name = :name',
+            'slug = :slug',
+            'description = :description',
+            'preview = :preview',
+            'type = :type',
             'category = :category',
-            'html = :html',
-            'data = :data',
-            "{$this->ownerKey} = :owner"
+            'config = :config',
         ];
 
         $values = [
-            ':name' => $data['name'] ?? '',
-            ':category' => $data['category'] ?? '',
-            ':html' => $data['html'] ?? '',
-            ':data' => json_encode($data),
-            ':owner' => $input[$this->ownerKey] ?? null,
-            ':id' => $whereClause['id'],
+            ':name' => $input['name'] ?? $existing['name'] ?? '',
+            ':slug' => $input['slug'] ?? $existing['slug'] ?? '',
+            ':description' => $input['description'] ?? $existing['description'] ?? '',
+            ':preview' => $input['preview'] ?? $existing['preview'] ?? '',
+            ':type' => $input['type'] ?? $existing['type'] ?? 'block',
+            ':category' => $input['category'] ?? $existing['category'] ?? '',
+            ':config' => is_array($config) ? json_encode($config, true) : $config,
         ];
 
-        if ($this->multitenancyEnabled) {
-            $fields[] = "{$this->tenantKey} = :tenant";
-            $values[':tenant'] = $input[$this->tenantKey] ?? null;
+        // Base WHERE clause (id)
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $fields) . " WHERE id = :id";
+        $whereValues = [':id' => $whereClause['id']];
+
+        // Tenant scope
+        if ($this->multitenancyEnabled && isset($whereClause[$this->tenantKey])) {
+            $sql .= " AND {$this->tenantKey} = :tenant";
+            $whereValues[':tenant'] = $whereClause[$this->tenantKey];
         }
 
-        $sql = "UPDATE {$this->table} SET " . implode(', ', $fields) . " WHERE id = :id";
+        // Owner scope
+        if (!empty($this->ownerKey) && isset($whereClause[$this->ownerKey])) {
+            $sql .= " AND {$this->ownerKey} = :owner";
+            $whereValues[':owner'] = $whereClause[$this->ownerKey];
+        }
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($values);
-
-        return true;
+        return $stmt->execute(array_merge($values, $whereValues));
     }
 
     public function destroy(array $whereClause): bool
