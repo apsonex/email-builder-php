@@ -2,8 +2,25 @@
 
 namespace Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers;
 
-abstract class BaseEmailConfigDriver
-{
+use Apsonex\EmailBuilderPhp\Concerns\Makebale;
+use Apsonex\EmailBuilderPhp\Contracts\EmailConfigWithAiDriverConract;
+use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers\Concerns\Fakeable;
 
-    abstract public function query(array $payload, array $headers = []): array;
+abstract class BaseEmailConfigDriver implements EmailConfigWithAiDriverConract
+{
+    use Makebale, Fakeable;
+
+    protected bool $valid = false;
+
+    protected ?array $response = null;
+
+    public function isValid(): bool
+    {
+        return $this->valid;
+    }
+
+    public function response(): ?array
+    {
+        return $this->response;
+    }
 }

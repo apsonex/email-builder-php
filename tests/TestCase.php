@@ -8,6 +8,8 @@ class TestCase extends Orchestra
 {
     protected function setUp(): void
     {
+        $this->loadEnvironmentVariables();
+
         parent::setUp();
     }
 
@@ -21,5 +23,12 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         //
+    }
+
+    protected function loadEnvironmentVariables()
+    {
+        $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/..' , '.env.testing');
+
+        $dotenv->load();
     }
 }
