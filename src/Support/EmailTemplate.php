@@ -36,7 +36,7 @@ class EmailTemplate implements EmailTemplateContract
      */
     public function get(string $industry, string $category, string $subject): ?array
     {
-        $file = email_builder_php_data_path("email-configs/templates/{$industry}/{$category}/{$subject}.json");
+        $file = Data::path("email-configs/templates/{$industry}/{$category}/{$subject}.json");
 
         return is_file($file) ? json_decode(file_get_contents($file), true) : null;
     }

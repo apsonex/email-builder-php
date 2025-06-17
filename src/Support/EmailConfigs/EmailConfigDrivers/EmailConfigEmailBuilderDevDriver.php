@@ -2,7 +2,7 @@
 
 namespace Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers;
 
-class EmailBuilderDevDriver extends BaseEmailConfigDriver
+class EmailConfigEmailBuilderDevDriver extends BaseDriver
 {
     protected static string $endpoint = 'https://emailbuilder.dev/api/email-builder/ai/actions/blocks/create';
 

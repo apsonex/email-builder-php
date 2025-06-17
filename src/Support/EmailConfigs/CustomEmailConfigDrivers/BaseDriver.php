@@ -1,11 +1,11 @@
 <?php
-
-namespace Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlockDrivers;
+namespace Apsonex\EmailBuilderPhp\Support\EmailConfigs\CustomEmailConfigDrivers;
 
 use Apsonex\EmailBuilderPhp\Concerns\Makebale;
 use Apsonex\EmailBuilderPhp\Concerns\InteractsWithDatabase;
 
 abstract class BaseDriver
 {
-    use InteractsWithDatabase, Makebale;
+    use Makebale, InteractsWithDatabase;
+
 }

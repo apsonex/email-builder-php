@@ -4,6 +4,8 @@ namespace Apsonex\EmailBuilderPhp\Contracts;
 
 interface CustomBlockContract
 {
+    public function tableName(string $tableName): static;
+
     public function prepare(array $args): static;
 
     public function tenantKeyName(): ?string;

@@ -4,13 +4,13 @@ namespace Apsonex\EmailBuilderPhp\Support\EmailConfigs;
 
 use Apsonex\EmailBuilderPhp\Concerns\Makebale;
 use Apsonex\EmailBuilderPhp\Contracts\EmailConfigWithAiDriverConract;
-use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers\EmailBuilderDevDriver;
+use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers\EmailConfigEmailBuilderDevDriver;
 
 class AiEmailConfig
 {
     use Makebale;
 
-    protected ?string $defaultDriver = EmailBuilderDevDriver::class;
+    protected ?string $defaultDriver = EmailConfigEmailBuilderDevDriver::class;
 
     protected ?string $driver = null;
 

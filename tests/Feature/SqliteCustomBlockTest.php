@@ -1,7 +1,7 @@
 <?php
 
-use Apsonex\EmailBuilderPhp\Support\CustomBlock\CustomBlock;
-use Apsonex\EmailBuilderPhp\Support\CustomBlock\Drivers\SqliteCustomBlockDriver;
+use Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlock;
+use Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlockDrivers\SqliteCustomBlockDriver;
 
 beforeEach(function () {
     // Create in-memory SQLite

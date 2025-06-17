@@ -1,15 +1,15 @@
 <?php
 
-use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers\EmailBuilderDevDriver;
+use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers\EmailConfigEmailBuilderDevDriver;
 
-describe('email_builder_dev_driver', function () {
+describe('block_email_builder_dev_driver_test', function () {
     it('returns_fake_response_when_fake_mode_enabled', function () {
 
-        $driver = (new EmailBuilderDevDriver())->fake(200);
+        $driver = (new EmailConfigEmailBuilderDevDriver())->fake(200);
 
         $response = $driver->query(sampleEmailConfigPayload());
 
-        expect($response)
+        expect($response->response())
             ->toBeArray()
             ->toHaveKey('status')
             ->toHaveKey('code')

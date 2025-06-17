@@ -78,7 +78,7 @@ class CustomBlock
     {
         $this->initilizeDriver();
 
-        return $this->driverInstance->prepare($this->getPreperationData())->{$method}(...$args);
+        return $this->driverInstance->tableName('custom_blocks')->prepare($this->getPreperationData())->{$method}(...$args);
     }
 
     protected function initilizeDriver()

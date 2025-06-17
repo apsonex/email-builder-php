@@ -9,7 +9,6 @@ class Industries
 {
     use Makebale;
 
-
     /**
      * Get all industry slugs mapped to their labels.
      *
@@ -20,7 +19,7 @@ class Industries
     {
         $content = [];
 
-        $path = email_builder_php_data_path('email-subjects');
+        $path = Data::path('email-subjects');
 
         foreach (glob($path . '/*.json') as $file) {
             $json = json_decode(file_get_contents($file), true);
@@ -56,7 +55,7 @@ class Industries
      */
     public function industry(string $industry): ?array
     {
-        $file = email_builder_php_data_path('email-subjects') . '/' . strtolower(str_replace(' ', '-', $industry)) . '.json';
+        $file = Data::path('email-subjects') . '/' . strtolower(str_replace(' ', '-', $industry)) . '.json';
 
         return is_file($file) ? json_decode(file_get_contents($file), true) : null;
     }

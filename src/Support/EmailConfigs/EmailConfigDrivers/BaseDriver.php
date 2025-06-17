@@ -2,11 +2,11 @@
 
 namespace Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers;
 
+use Apsonex\EmailBuilderPhp\Concerns\Fakeable;
 use Apsonex\EmailBuilderPhp\Concerns\Makebale;
 use Apsonex\EmailBuilderPhp\Contracts\EmailConfigWithAiDriverConract;
-use Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers\Concerns\Fakeable;
 
-abstract class BaseEmailConfigDriver implements EmailConfigWithAiDriverConract
+abstract class BaseDriver implements EmailConfigWithAiDriverConract
 {
     use Makebale, Fakeable;
 

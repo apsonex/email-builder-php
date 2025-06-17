@@ -1,6 +1,6 @@
 <?php
 
-use Apsonex\EmailBuilderPhp\Support\CustomBlock\Drivers\FileCustomBlockDriver;
+use Apsonex\EmailBuilderPhp\Support\Blocks\CustomBlockDrivers\FileCustomBlockDriver;
 use Illuminate\Support\Str;
 
 beforeEach(function () {

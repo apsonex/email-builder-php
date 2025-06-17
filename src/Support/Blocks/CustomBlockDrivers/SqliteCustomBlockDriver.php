@@ -9,8 +9,6 @@ class SqliteCustomBlockDriver extends BaseDriver implements CustomBlockContract
 {
     protected \PDO $pdo;
 
-    protected string $table = 'custom_blocks';
-
     protected bool $tableExist = false;
 
     public function prepare(array $args): static

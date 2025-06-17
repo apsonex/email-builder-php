@@ -1,6 +1,6 @@
 <?php
 
-namespace Apsonex\EmailBuilderPhp\Support\EmailConfigs\EmailConfigDrivers\Concerns;
+namespace Apsonex\EmailBuilderPhp\Concerns;
 
 trait Fakeable
 {
