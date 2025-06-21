@@ -6,11 +6,13 @@ trait Fakeable
 {
     protected bool $fake = false;
     protected int $fakeType = 200;
+    protected int $fakeSpeed = 10;
 
-    public function fake(int $fakeType = 200): static
+    public function fake(int $fakeType = 200, int $streamSpeed = 10): static
     {
         $this->fake = true;
-        $this->fakeType = in_array($fakeType, static::availableFakeTypes()) ? $fakeType : 200;
+        $this->fakeType = $fakeType;
+        $this->fakeSpeed = $streamSpeed;
         return $this;
     }
 

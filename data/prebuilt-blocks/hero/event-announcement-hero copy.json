@@ -1,8 +1,0 @@
-{
-    "name": "Event Announcement Hero",
-    "slug": "event-announcement-hero",
-    "type": "block",
-    "category": "hero",
-    "description": "A hero section announcing an upcoming event or celebration. Great for invitations or event promotions.",
-    "config": {...}
-}

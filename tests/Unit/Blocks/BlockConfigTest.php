@@ -1,11 +1,11 @@
 <?php
 
-use Apsonex\EmailBuilderPhp\Support\EmailConfigs\AiEmailConfig;
+use Apsonex\EmailBuilderPhp\Support\Blocks\AiBlockConfig;
 
-describe('email_config_test', function () {
+describe('block_config_test', function () {
 
-    it('email_config_download_fake_response_from_email_builder_dev', function () {
-        $response = AiEmailConfig::make()
+    it('block_config_download_fake_response_from_email_builder_dev', function () {
+        $response = AiBlockConfig::make()
             ->driver()
             ->endpoint('http://localhost:3099')
             ->fake()
@@ -16,7 +16,7 @@ describe('email_config_test', function () {
                 ]
             ])
             ->query(
-                payload: sampleAiEmailConfigPayload()
+                payload: sampleAiBlockConfigPayload()
             );
 
         expect($response)->toBeInstanceOf(\Apsonex\EmailBuilderPhp\Contracts\StreamedResponse::class);
